@@ -12,3 +12,6 @@
 
 - name: nsupdate.info
   url: https://github.com/nsupdate-info/nsupdate.info
+
+- name: docker-externaldns-controller
+  url: https://github.com/ronaldmiranda/docker-externaldns-controller

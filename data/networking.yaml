@@ -33,3 +33,6 @@
 
 - name: Squid
   url: https://github.com/squid-cache/squid
+
+- name: docker-cloudflared-controller
+  url: https://github.com/ronaldmiranda/docker-cloudflared-controller
