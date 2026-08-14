@@ -18,3 +18,6 @@
 
 - name: µTask
   url: https://github.com/ovh/utask
+
+- name: UniFi Reactor
+  url: https://github.com/robbeverhelst/unifi-reactor
