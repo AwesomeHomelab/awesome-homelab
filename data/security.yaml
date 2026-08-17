@@ -57,3 +57,5 @@
 
 - name: GoCrack
   url: https://github.com/mandiant/gocrack
+- name: easywall
+  url: 'https://github.com/jp1337/easywall'
