@@ -33,3 +33,6 @@
 
 - name: Squid
   url: https://github.com/squid-cache/squid
+
+- name: MyNeS
+  url: https://github.com/fxerkan/my_network_scanner
