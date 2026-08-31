@@ -33,3 +33,7 @@
 
 - name: Squid
   url: https://github.com/squid-cache/squid
+
+- name: NSL.SH
+  url: 'https://github.com/Yundera/mesh-router-root'
+  description: 'Free domain routing for self-hosted services with automatic HTTPS behind NAT. https://nsl.sh'
