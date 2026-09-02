@@ -60,3 +60,7 @@
 
 - name: 1Backend
   url: https://github.com/1backend/1backend
+
+- name: MailFathom
+  url: 'https://github.com/Krzysztof318/MailFathom'
+  description: Security-first, self-hosted AI brain for email that synchronizes IMAP mailboxes into PostgreSQL and supports lexical and semantic search, cited answers, and local models.
