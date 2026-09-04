@@ -12,3 +12,6 @@
 
 - name: nsupdate.info
   url: https://github.com/nsupdate-info/nsupdate.info
+
+- name: Holeberry
+  url: 'https://github.com/pedrovieira/Holeberry'
