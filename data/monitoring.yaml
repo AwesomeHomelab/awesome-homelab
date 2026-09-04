@@ -60,3 +60,6 @@
 
 - name: highlight.io
   url: https://github.com/highlight/highlight
+
+- name: StatLite
+  url: 'https://github.com/PVRLabs/statlite'
