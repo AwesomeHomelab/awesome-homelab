@@ -51,3 +51,6 @@
 
 - name: DebOps
   url: https://github.com/debops/debops
+
+- name: PVE Center
+  url: https://github.com/mcluremail/pvecenter
