@@ -10,6 +10,9 @@
 - name: Deluge
   url: 'https://github.com/deluge-torrent/deluge'
 
+- name: FluxDown
+  url: 'https://github.com/zerx-lab/FluxDown'
+
 - name: Mylar3
   url: 'https://github.com/mylar3/mylar3'
 
