@@ -243,3 +243,6 @@
 
 - name: Accent
   url: https://github.com/mirego/accent
+
+- name: intentic
+  url: https://github.com/intentic/intentic
