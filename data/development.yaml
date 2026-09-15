@@ -37,6 +37,9 @@
 - name: Sshwifty
   url: 'https://github.com/nirui/sshwifty'
 
+- name: WebSSH
+  url: 'https://github.com/bifrost0x/webssh'
+
 - name: Planka
   url: 'https://github.com/plankanban/planka'
 
