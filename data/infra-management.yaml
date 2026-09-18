@@ -39,6 +39,8 @@
 
 - name: CapRover
   url: https://github.com/caprover/caprover
+  - name: Peon
+    url: https://github.com/Peon-sh/Peon
 
 - name: Open and cheap DIY IP-KVM based on Raspberry Pi
   url: https://github.com/pikvm/pikvm
