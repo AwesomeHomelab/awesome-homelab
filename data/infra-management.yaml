@@ -51,3 +51,6 @@
 
 - name: DebOps
   url: https://github.com/debops/debops
+
+- name: s3-orchestrator
+  url: https://github.com/afreidah/s3-orchestrator
