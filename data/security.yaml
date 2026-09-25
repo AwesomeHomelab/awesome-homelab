@@ -31,7 +31,7 @@
 - name: OpenCTI
   url: https://github.com/OpenCTI-Platform/opencti
 
-- name: bunkerized-nginx
+- name: BunkerWeb
   url: https://github.com/bunkerity/bunkerweb
 
 - name: TheHive
