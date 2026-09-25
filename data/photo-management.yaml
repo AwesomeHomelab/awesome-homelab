@@ -1,6 +1,9 @@
 - name: LibrePhotos
   url: 'https://github.com/LibrePhotos/librephotos'
 
+- name: Lynavo Drive
+  url: 'https://github.com/Lynavo/lynavo-drive'
+
 - name: immich
   url: 'https://github.com/immich-app/immich'
 
