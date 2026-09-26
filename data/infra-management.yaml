@@ -51,3 +51,6 @@
 
 - name: DebOps
   url: https://github.com/debops/debops
+
+- name: Homedex
+  url: https://github.com/HarshShah0203/homedex
