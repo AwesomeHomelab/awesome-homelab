@@ -43,6 +43,9 @@
 - name: Maintainerr
   url: 'https://github.com/jorenn92/Maintainerr'
 
+- name: CleanArr
+  url: 'https://github.com/mambastick/Cleanarr'
+
 - name: Overseerr
   url: 'https://github.com/sct/overseerr'
 
