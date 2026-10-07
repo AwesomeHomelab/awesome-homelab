@@ -39,3 +39,12 @@
 
 - name: elevatorsaga
   url: https://github.com/magwo/elevatorsaga
+
+- name: CloudyDoom
+  url: https://github.com/BenMcLean/CloudyDoom
+
+- name: CloudyQuake
+  url: https://github.com/BenMcLean/CloudyQuake
+
+- name: CloudyTIC80
+  url: https://github.com/BenMcLean/CloudyTIC80
