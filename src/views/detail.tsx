@@ -39,16 +39,16 @@ export function DashboardDetail({
               <p className="setup">{dashboard.docs}</p>
             ) : (
               <p>
-                Add this registry in Metrix.Bar, then choose Install to add the dashboard. Review
-                the requested permissions in the app.
+                Choose Install in Metrix.Bar, then review the dashboard's permissions and inputs in
+                the app.
               </p>
             )}
           </section>
           <section aria-labelledby="updates">
             <h2 id="updates">Keep it up to date</h2>
             <p>
-              Install through Metrix.Bar to receive future updates from this registry. The dashboard
-              keeps its original connections to external services.
+              Install from this registry to check for updates in Metrix.Bar. You choose when to
+              apply them.
             </p>
           </section>
           <details>
@@ -59,14 +59,14 @@ export function DashboardDetail({
         </div>
         <aside aria-label="Installation and dashboard information">
           <article className="install-panel">
-            <h2>Add to your menu bar</h2>
+            <h2>Install this dashboard</h2>
             <a role="button" href={installLink(dashboard.id, manifest.registryURL)}>
               Install in Metrix.Bar
             </a>
             <a role="button" className="secondary outline" href={file} download>
               Download .bar
             </a>
-            <small>Requires Metrix.Bar for macOS. Installation is confirmed in the app.</small>
+            <small>Requires Metrix.Bar. Confirm installation in the app.</small>
             <dl>
               {dashboard.author && (
                 <>

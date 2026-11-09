@@ -53,21 +53,10 @@ vp run dev
 
 ## 部署
 
-登录 Cloudflare，预检并发布：
-
 ```sh
-vp exec cf auth login
 vp run deploy:dry-run
 vp run deploy
 ```
-
-脚本使用 **cf** 部署 Void 的预构建输出。在 Cloudflare 后台手动将 `awesome.metrix.bar` 绑定到 Worker，再执行验证：
-
-```sh
-vp run verify:http -- https://awesome.metrix.bar --edge-cache
-```
-
-Worker 配置见 [void.config.ts](void.config.ts)。主页和索引的更新最多约需五分钟可见。
 
 ## 许可证
 

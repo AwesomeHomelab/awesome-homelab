@@ -34,7 +34,7 @@ export function Site({ manifest, children }: { manifest: Manifest; children: Rea
         {children}
       </main>
       <footer className="container site-footer">
-        <small>Independent dashboards. One community registry.</small>
+        <small>Community dashboards for Metrix.Bar.</small>
         <small>
           <a href="/dashboards/index.json">Registry JSON</a> ·{" "}
           <a href="https://metrix.bar/docs/registries.md">Registry guide</a>

@@ -53,21 +53,10 @@ Open `http://localhost:5173/`. Use `vp run build` for a production build or `vp 
 
 ## Deployment
 
-Sign in to Cloudflare, check the deployment, and publish:
-
 ```sh
-vp exec cf auth login
 vp run deploy:dry-run
 vp run deploy
 ```
-
-The scripts use **cf** to deploy Void's prebuilt output. Manually bind `awesome.metrix.bar` to the Worker in Cloudflare, then verify:
-
-```sh
-vp run verify:http -- https://awesome.metrix.bar --edge-cache
-```
-
-Worker settings are in [void.config.ts](void.config.ts). Homepage and index updates can take up to five minutes to appear.
 
 ## License
 

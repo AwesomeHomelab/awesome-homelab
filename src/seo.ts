@@ -92,7 +92,6 @@ export function dashboardHead(dashboard: Dashboard, manifest: Manifest): HeadDes
         name: dashboard.name,
         description,
         softwareVersion: dashboard.version,
-        operatingSystem: "macOS",
         softwareRequirements: "Metrix.Bar",
         applicationCategory: dashboard.category,
         downloadUrl: new URL(dashboard.file, manifest.registryURL).href,
