@@ -1,0 +1,113 @@
+import { execFile } from "node:child_process";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { basename, join, resolve } from "node:path";
+import { promisify } from "node:util";
+import { INDEX_PATH } from "../src/registry.ts";
+import type { Asset, Dashboard, Manifest, Registry } from "../src/registry.ts";
+import { completeEntry, sha256, sourceURL, validateRegistry } from "./registry.ts";
+import { validateSources } from "./config.ts";
+import type { Release, Source } from "./config.ts";
+import { cacheDir, download } from "./download.ts";
+import { writeAtomic } from "./files.ts";
+
+const exec = promisify(execFile);
+const root = resolve(import.meta.dirname, "..");
+
+async function readEntry(builder: string, source: Source, release: Release): Promise<Dashboard> {
+  const { bytes } = await download(
+    { url: sourceURL(source, release), sha256: release.sha256 },
+    "bar",
+  );
+  const workspace = await mkdtemp(join(cacheDir, "parse-"));
+  try {
+    const input = join(workspace, "input");
+    const output = join(workspace, "output");
+    await mkdir(input);
+    await writeFile(join(input, basename(release.path ?? source.path)), bytes);
+    await exec(process.execPath, [
+      builder,
+      "--input",
+      input,
+      "--output",
+      output,
+      "--id",
+      source.id,
+      "--name",
+      source.id,
+    ]);
+    const registry = JSON.parse(await readFile(join(output, "index.json"), "utf8")) as Registry;
+    const entry = registry.dashboards[0];
+    if (registry.dashboards.length !== 1) {
+      throw new Error(`Expected exactly one dashboard: ${source.id}`);
+    }
+    return completeEntry(entry, source, release);
+  } finally {
+    await rm(workspace, { recursive: true, force: true });
+  }
+}
+
+export async function buildRegistry(
+  input: unknown,
+  generated = join(root, ".generated"),
+): Promise<Manifest> {
+  const config = validateSources(input);
+  const [builder, schema] = await Promise.all([
+    download(config.tools.builder, "mjs"),
+    download(config.tools.schema, "json"),
+  ]);
+  const parsedSchema = JSON.parse(schema.bytes.toString()) as object;
+  const resources: Record<string, Asset> = {};
+  const dashboards = await Promise.all(
+    config.dashboards.map(async (source) => {
+      let latest: Dashboard | undefined;
+      // Parse historical releases too: their immutable URLs must survive future deployments.
+      for (const release of source.releases) {
+        const entry = await readEntry(builder.path, source, release);
+        resources[`/dashboards/${entry.file}`] = {
+          url: sourceURL(source, release),
+          sha256: entry.sha256,
+          contentType: "application/octet-stream",
+        };
+        if (entry.icon && /^(?:https?:|\/\/)/i.test(entry.icon)) {
+          const icon = release.icon;
+          if (!icon || icon.url !== entry.icon) {
+            throw new Error(
+              `Remote icon needs a pinned release.icon (url, sha256, contentType): ${source.id}`,
+            );
+          }
+          await download(icon, "icon");
+          const path = `/dashboards/icons/${icon.sha256}`;
+          resources[path] = icon;
+          entry.icon = new URL(path, config.registry.origin).href;
+        }
+        latest = entry;
+      }
+      return latest!;
+    }),
+  );
+  const registry: Registry = {
+    $schema: config.tools.schema.url,
+    schema_version: 1,
+    id: config.registry.id,
+    name: config.registry.name,
+    dashboards,
+  };
+  validateRegistry(registry, parsedSchema);
+  const index = `${JSON.stringify(registry, null, 2)}\n`;
+  const manifest: Manifest = {
+    registryURL: new URL(INDEX_PATH, config.registry.origin).href,
+    registry,
+    indexETag: `"${sha256(index)}"`,
+    assets: Object.fromEntries(Object.entries(resources).sort(([a], [b]) => a.localeCompare(b))),
+  };
+  await writeAtomic(join(generated, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
+  return manifest;
+}
+
+if (import.meta.main) {
+  const config: unknown = JSON.parse(await readFile(join(root, "registry/sources.json"), "utf8"));
+  const manifest = await buildRegistry(config);
+  console.log(
+    `Built ${manifest.registry.dashboards.length} dashboards and ${Object.keys(manifest.assets).length} immutable resource routes.`,
+  );
+}

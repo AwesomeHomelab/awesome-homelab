@@ -1,0 +1,15 @@
+node_modules/
+.cache/
+.generated/
+public/avatars/
+dist/
+.wrangler/
+.vite/
+.void/
+.void-wrangler.jsonc
+.cloudflare/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+.dev.vars*

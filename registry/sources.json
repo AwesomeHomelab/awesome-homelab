@@ -1,0 +1,131 @@
+{
+  "registry": {
+    "id": "awesome",
+    "name": "Awesome.Metrix.Bar",
+    "origin": "https://awesome.metrix.bar"
+  },
+  "tools": {
+    "builder": {
+      "url": "https://metrix.bar/dashboards/build.js",
+      "sha256": "2f0c2f2daf02b03b94626a78d21d4322856b59b4e04017c0a22adf2a589e23b1"
+    },
+    "schema": {
+      "url": "https://metrix.bar/dashboards/schema.json",
+      "sha256": "0058d9d3e8efaaf17a712e86191367378473bf3613a8b1ec39def11c7df6ef2e"
+    }
+  },
+  "dashboards": [
+    {
+      "id": "komari",
+      "repository": "baranwang/metrix-bar",
+      "path": "komari/komari.bar",
+      "author": "baranwang",
+      "license": "AGPL-3.0-only",
+      "releases": [
+        {
+          "commit": "4a66a6972ac8e9b45a00600f143701bbf86af6e6",
+          "version": "1.2.0",
+          "sha256": "b2f3ef640a1c35b6a322178423c8f03c19d4f1bb98e07fb5dfb3c3457b9fcf18"
+        }
+      ]
+    },
+    {
+      "id": "tokens",
+      "repository": "baranwang/metrix-bar",
+      "path": "tokens/tokens.bar",
+      "author": "baranwang",
+      "license": "AGPL-3.0-only",
+      "releases": [
+        {
+          "commit": "4a66a6972ac8e9b45a00600f143701bbf86af6e6",
+          "version": "1.0.0",
+          "sha256": "bcc9c9b05b7c3e762fd5684554b6a0db7e7edd9bbe706f78a725fd4ca22da4d9"
+        }
+      ]
+    },
+    {
+      "id": "pulse",
+      "repository": "fatwang2/Pulse",
+      "path": "metrix/pulse.bar",
+      "author": "fatwang2",
+      "license": "MIT",
+      "releases": [
+        {
+          "commit": "ed336062bd521ebfeab7c6031bff5e3e6efbc3f4",
+          "version": "1.0.0",
+          "sha256": "f94afe95fc3906e10d303469f15d7f38904eff9af9b3ce8b0762f7d2ad0634f1"
+        }
+      ]
+    },
+    {
+      "id": "codex-resets",
+      "repository": "0tt0/codex-resets-bar",
+      "path": "codex-resets.bar",
+      "author": "0tt0",
+      "license": "Apache-2.0",
+      "releases": [
+        {
+          "commit": "b222f808580fc4de9aa4718b3db0b605648628b1",
+          "version": "0.1.4",
+          "sha256": "88d682087b4eb91be78798b564e6abd4e94fb69bbaa1a20d7b1358f5942766dd"
+        }
+      ]
+    },
+    {
+      "id": "codex-resets-en",
+      "repository": "0tt0/codex-resets-bar",
+      "path": "codex-resets-en.bar",
+      "author": "0tt0",
+      "license": "Apache-2.0",
+      "releases": [
+        {
+          "commit": "b222f808580fc4de9aa4718b3db0b605648628b1",
+          "version": "0.1.4",
+          "sha256": "85a45e9a0aefd0970abde97604c66049f30784815a85c72614cb6876d83b97c1"
+        }
+      ]
+    },
+    {
+      "id": "calendar",
+      "repository": "JasonChou0v0/metrix-bar-dashboards",
+      "path": "dashboards/calendar.bar",
+      "author": "JasonChou0v0",
+      "license": "UNLICENSED",
+      "releases": [
+        {
+          "commit": "64e2c1cceea645a190f98f7e7b3057900284bf97",
+          "version": "1.1.0",
+          "sha256": "adeefc4930aa2e0ad809437b4b615c67a4273f225cc11aae475797d6eed18556"
+        }
+      ]
+    },
+    {
+      "id": "local-ports",
+      "repository": "JasonChou0v0/metrix-bar-dashboards",
+      "path": "dashboards/local-ports.bar",
+      "author": "JasonChou0v0",
+      "license": "UNLICENSED",
+      "releases": [
+        {
+          "commit": "64e2c1cceea645a190f98f7e7b3057900284bf97",
+          "version": "1.1.2",
+          "sha256": "05122ad285e46ff90f7f3124a70c752d710edf148629c303b1739cea5bedfdd7"
+        }
+      ]
+    },
+    {
+      "id": "stock-board",
+      "repository": "JasonChou0v0/metrix-bar-dashboards",
+      "path": "dashboards/stock-board.bar",
+      "author": "JasonChou0v0",
+      "license": "UNLICENSED",
+      "releases": [
+        {
+          "commit": "64e2c1cceea645a190f98f7e7b3057900284bf97",
+          "version": "1.1.2",
+          "sha256": "6eda244178ae2a36a9ed09951d9b609ace0d0080b57d04a7ee413b71b555e3d5"
+        }
+      ]
+    }
+  ]
+}

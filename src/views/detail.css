@@ -1,0 +1,92 @@
+.breadcrumbs {
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+}
+.breadcrumbs ul {
+  flex-wrap: wrap;
+}
+.breadcrumbs li + li::before {
+  content: "/";
+  color: var(--pico-muted-color);
+  margin-right: 1rem;
+}
+.detail-heading {
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  max-width: 52rem;
+}
+.detail-heading .dashboard-icon {
+  width: 4rem;
+  height: 4rem;
+}
+.detail-heading h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.04em;
+  margin-bottom: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.detail-heading .eyebrow {
+  margin-bottom: 0.5rem;
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 4rem;
+}
+.detail-grid h2 {
+  font-size: 1.25rem;
+}
+.detail-grid section {
+  margin-bottom: 2.5rem;
+}
+.setup {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+}
+.checksum {
+  display: block;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  font-size: 0.8rem;
+}
+.install-panel > a[role="button"] {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.install-panel > small {
+  display: block;
+  color: var(--pico-muted-color);
+  font-size: 0.8rem;
+}
+.install-panel dl {
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+}
+.install-panel dt {
+  color: var(--pico-muted-color);
+  font-weight: 400;
+}
+.install-panel dd {
+  margin: 0.25rem 0 1rem;
+  overflow-wrap: anywhere;
+}
+.source-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+.back-link {
+  margin-top: 3rem;
+}
+@media (max-width: 767px) {
+  .detail-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+  .detail-heading {
+    margin-bottom: 2rem;
+  }
+}

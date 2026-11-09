@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          node-version-file: .node-version
+          cache: true
+          run-install: |
+            args: ['--frozen-lockfile']
+      - run: vp run verify
+      - run: vp run deploy:dry-run
+      - name: Verify local HTTP downloads
+        run: |
+          vp run dev --host 127.0.0.1 --port 5173 --strictPort > /tmp/metrix-worker.log 2>&1 &
+          worker_pid=$!
+          trap 'kill "$worker_pid"; cat /tmp/metrix-worker.log' EXIT
+          for attempt in {1..30}; do
+            if curl --silent --fail http://127.0.0.1:5173/dashboards/index.json > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          vp run verify:http -- http://127.0.0.1:5173
