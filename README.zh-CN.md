@@ -29,6 +29,7 @@
 | [`local-ports`](https://awesome.metrix.bar/dashboards/local-ports)         | 查看 macOS 上的 TCP 监听、UDP 绑定及对应进程。 | [JasonChou0v0](https://github.com/JasonChou0v0/metrix-bar-dashboards)    | UNLICENSED    |
 | [`stock-board`](https://awesome.metrix.bar/dashboards/stock-board)         | 查看美股、港股和 A 股报价及走势图。            | [JasonChou0v0](https://github.com/JasonChou0v0/metrix-bar-dashboards)    | UNLICENSED    |
 | [`stevefans`](https://awesome.metrix.bar/dashboards/stevefans)             | 以点阵显示 X 粉丝数，支持多账号与趋势图。      | [zxfccmm4](https://github.com/zxfccmm4/stevefans-bar)                    | MIT           |
+| [`magpie`](https://awesome.metrix.bar/dashboards/magpie)                   | 在菜单栏切换 Agent 模型、连接状态与额度。      | [thedavidweng](https://github.com/thedavidweng/metrix-bar)               | AGPL-3.0-only |
 | [`nezha`](https://awesome.metrix.bar/dashboards/nezha)                     | 监控哪吒 V2 服务器、服务探测和关注事项。       | [bluenight91](https://github.com/bluenight91/nezha-metrix-bar)           | AGPL-3.0-only |
 
 本机端口看板需要 macOS 和[上游采集器](https://github.com/JasonChou0v0/metrix-bar-dashboards#启动本机端口采集)。各看板所需账户、服务或本地工具，请参照其配置说明。

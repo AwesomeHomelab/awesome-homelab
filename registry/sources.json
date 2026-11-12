@@ -145,6 +145,20 @@
       ]
     },
     {
+      "id": "magpie",
+      "repository": "thedavidweng/metrix-bar",
+      "path": "magpie/magpie.bar",
+      "author": "thedavidweng",
+      "license": "AGPL-3.0-only",
+      "releases": [
+        {
+          "commit": "25bc340298cb7a91b900856adca270e437869e0f",
+          "version": "1.0.0",
+          "sha256": "54696bec130e46afdade9f7bcecb6ba3d1a61dbc6c014890c1aadf356c0bbf82"
+        }
+      ]
+    },
+    {
       "id": "nezha",
       "repository": "bluenight91/nezha-metrix-bar",
       "path": "nezha.bar",
