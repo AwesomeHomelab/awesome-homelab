@@ -131,6 +131,20 @@
       ]
     },
     {
+      "id": "stevefans",
+      "repository": "zxfccmm4/stevefans-bar",
+      "path": "stevefans.bar",
+      "author": "zxfccmm4",
+      "license": "MIT",
+      "releases": [
+        {
+          "commit": "610ae9085a60c03bb67a2c3804262b77b74ca471",
+          "version": "1.12.4",
+          "sha256": "e719fdc585a33ea5ed9a68d79774cac41c98866b93d280cde1e9336ce3db7c70"
+        }
+      ]
+    },
+    {
       "id": "magpie",
       "repository": "thedavidweng/metrix-bar",
       "path": "magpie/magpie.bar",

@@ -18,9 +18,9 @@ afterEach(async () => {
 });
 
 describe("author avatars", () => {
-  it("uses verified numeric IDs and rejects unknown authors", () => {
+  it("uses GitHub usernames with Unavatar and rejects unknown authors", () => {
     expect(authors.find(({ name }) => name === "baranwang")?.url).toBe(
-      "https://avatars-githubusercontent.webp.se/u/11427801",
+      "https://unavatar.webp.se/github/baranwang",
     );
     expect(avatarPath("baranwang")).toBe("/avatars/baranwang.webp");
     for (const author of ["unknown", "constructor", "__proto__", "https://example.com"])
@@ -38,7 +38,7 @@ describe("author avatars", () => {
     await buildAvatars(cache, output, upstream);
     expect(upstream).toHaveBeenCalledTimes(authors.length);
     expect(upstream).toHaveBeenCalledWith(
-      "https://avatars-githubusercontent.webp.se/u/11427801",
+      "https://unavatar.webp.se/github/baranwang",
       expect.objectContaining({ headers: { Accept: "image/webp" }, redirect: "error" }),
     );
     expect(new Uint8Array(await readFile(join(output, "baranwang.webp")))).toEqual(bytes);

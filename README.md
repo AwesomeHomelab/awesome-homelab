@@ -28,6 +28,7 @@ Installed dashboards stay linked to registry updates, which require your confirm
 | [`calendar`](https://awesome.metrix.bar/dashboards/calendar)               | Check today's date and browse a monthly calendar.               | [JasonChou0v0](https://github.com/JasonChou0v0/metrix-bar-dashboards)    | UNLICENSED    |
 | [`local-ports`](https://awesome.metrix.bar/dashboards/local-ports)         | Find TCP listeners, UDP bindings, and their processes on macOS. | [JasonChou0v0](https://github.com/JasonChou0v0/metrix-bar-dashboards)    | UNLICENSED    |
 | [`stock-board`](https://awesome.metrix.bar/dashboards/stock-board)         | View US, Hong Kong, and mainland China stock quotes and charts. | [JasonChou0v0](https://github.com/JasonChou0v0/metrix-bar-dashboards)    | UNLICENSED    |
+| [`stevefans`](https://awesome.metrix.bar/dashboards/stevefans)             | Follow X follower counts with a pixel dot-matrix readout.       | [zxfccmm4](https://github.com/zxfccmm4/stevefans-bar)                    | MIT           |
 | [`magpie`](https://awesome.metrix.bar/dashboards/magpie)                   | Switch agent models and watch allowances from the menu bar.     | [thedavidweng](https://github.com/thedavidweng/metrix-bar)               | AGPL-3.0-only |
 
 Local Ports requires macOS and its [upstream collector](https://github.com/JasonChou0v0/metrix-bar-dashboards#启动本机端口采集). Check each dashboard's setup for required accounts, services, or local tools.
