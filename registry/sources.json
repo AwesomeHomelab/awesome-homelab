@@ -157,6 +157,20 @@
           "sha256": "54696bec130e46afdade9f7bcecb6ba3d1a61dbc6c014890c1aadf356c0bbf82"
         }
       ]
+    },
+    {
+      "id": "nezha",
+      "repository": "bluenight91/nezha-metrix-bar",
+      "path": "nezha.bar",
+      "author": "bluenight91",
+      "license": "AGPL-3.0-only",
+      "releases": [
+        {
+          "commit": "64f4952a1ef1f58d60ccc8c4b04c9b78cbc6b2d3",
+          "version": "1.2.0",
+          "sha256": "4ca6386e22c5faa3c629c47f187736ba00e82675b2f02ac0d152f2233b6bd70d"
+        }
+      ]
     }
   ]
 }

@@ -30,6 +30,7 @@ Installed dashboards stay linked to registry updates, which require your confirm
 | [`stock-board`](https://awesome.metrix.bar/dashboards/stock-board)         | View US, Hong Kong, and mainland China stock quotes and charts. | [JasonChou0v0](https://github.com/JasonChou0v0/metrix-bar-dashboards)    | UNLICENSED    |
 | [`stevefans`](https://awesome.metrix.bar/dashboards/stevefans)             | Follow X follower counts with a pixel dot-matrix readout.       | [zxfccmm4](https://github.com/zxfccmm4/stevefans-bar)                    | MIT           |
 | [`magpie`](https://awesome.metrix.bar/dashboards/magpie)                   | Switch agent models and watch allowances from the menu bar.     | [thedavidweng](https://github.com/thedavidweng/metrix-bar)               | AGPL-3.0-only |
+| [`nezha`](https://awesome.metrix.bar/dashboards/nezha)                     | Monitor Nezha servers, service probes, and attention items.     | [bluenight91](https://github.com/bluenight91/nezha-metrix-bar)           | AGPL-3.0-only |
 
 Local Ports requires macOS and its [upstream collector](https://github.com/JasonChou0v0/metrix-bar-dashboards#启动本机端口采集). Check each dashboard's setup for required accounts, services, or local tools.
 
