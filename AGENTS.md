@@ -31,6 +31,7 @@
 - [Pulse](https://github.com/fatwang2/Pulse/blob/main/metrix/README.md): resolve `metrix/index.json` and `metrix/pulse.bar` from the `metrix/` directory, not the repository root.
 - [Codex Resets](https://github.com/0tt0/codex-resets-bar): include both `codex-resets.bar` and `codex-resets-en.bar` using their actual metadata.
 - [JasonChou0v0/metrix-bar-dashboards](https://github.com/JasonChou0v0/metrix-bar-dashboards): files are under `dashboards/`. No upstream license is declared; record `UNLICENSED`. Local Ports requires the upstream macOS collector described in its README; do not execute it during registry generation.
+- [thedavidweng/metrix-bar](https://github.com/thedavidweng/metrix-bar/tree/main/magpie): Magpie lives under `magpie/` and is AGPL-3.0-only. Its `homepage` points at [yetone/magpie](https://github.com/yetone/magpie), the app it controls; keep the repository URL as the source link.
 - Preserve authors, license declarations, and source links. Revalidate upstream examples instead of concatenating their indexes.
 - `registry/sources.json` pins full commits, actual metadata versions, and original-byte SHA-256 hashes. Append releases from oldest to newest; retain history so old download URLs keep working. Download the official builder and schema without SHA-256 pins; keep dashboard files and remote icons hash-pinned.
 
