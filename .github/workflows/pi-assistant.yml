@@ -16,7 +16,7 @@ on:
   push:
     branches: [master]
   workflow_run:
-    workflows: [Update dashboards]
+    workflows: [Update dashboards, CI]
     types: [completed]
 
 permissions:
@@ -37,7 +37,8 @@ jobs:
       queue: max
     if: >-
       github.event_name == 'issues' || github.event_name == 'workflow_dispatch'
-      || github.event_name == 'push' || github.event_name == 'workflow_run'
+      || github.event_name == 'push'
+      || (github.event_name == 'workflow_run' && github.event.workflow_run.name == 'Update dashboards')
       || (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@pi'))
       || (github.event_name == 'pull_request_target' && github.event.action != 'closed'
         && github.event.pull_request.head.repo.full_name == github.repository
@@ -77,6 +78,36 @@ jobs:
       - name: Check pi result
         if: steps.pi.outputs.success == 'false'
         run: exit 1
+  approve-ci:
+    if: >-
+      github.event_name == 'workflow_run' && github.event.workflow_run.name == 'CI'
+      && github.event.workflow_run.path == '.github/workflows/ci.yml'
+      && github.event.workflow_run.conclusion == 'action_required'
+      && github.event.workflow_run.event == 'pull_request'
+      && github.event.workflow_run.actor.login == 'github-actions[bot]'
+      && github.event.workflow_run.head_repository.full_name == github.repository
+      && startsWith(github.event.workflow_run.head_branch, 'automation/pi/')
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Approve assistant CI
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          workflow="repos/$GH_REPO/contents/.github/workflows/ci.yml"
+          trusted=$(gh api --method GET "$workflow" -f ref="$DEFAULT_BRANCH" --jq .sha)
+          proposed=$(gh api --method GET "$workflow" -f ref="$HEAD_SHA" --jq .sha)
+          if [[ "$trusted" != "$proposed" ]]; then
+            echo "CI workflow changes require maintainer approval."
+            exit 0
+          fi
+          gh api --method POST "repos/$GH_REPO/actions/runs/$RUN_ID/approve"
   close-issue:
     if: >-
       github.event_name == 'pull_request_target' && github.event.pull_request.merged
