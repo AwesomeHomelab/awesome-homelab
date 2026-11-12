@@ -77,12 +77,15 @@ it("appends actual releases while preserving history and sharing a repository sn
 it("skips identical bytes without appending a release", async () => {
   const { config, files } = fixture();
   const source = config.dashboards[0]!;
-  files.set(source.id, bar(source.id, source.releases[0]!.version));
-  source.releases[0]!.sha256 = sha256(files.get(source.id)!);
+  const previous = source.releases.at(-1)!;
+  files.set(source.id, bar(source.id, previous.version));
+  previous.sha256 = sha256(files.get(source.id)!);
   const result = await updateDashboards(config);
   expect(result.failed).toBe(false);
   expect(result.config.dashboards[0]).toEqual(source);
-  expect(result.config.dashboards[1]!.releases).toHaveLength(2);
+  expect(result.config.dashboards[1]!.releases).toHaveLength(
+    config.dashboards[1]!.releases.length + 1,
+  );
 });
 
 it("keeps the configuration unchanged when every file is identical", async () => {
@@ -122,15 +125,17 @@ it("continues with other repositories after a shared HEAD request fails", async 
   expect(result.failed).toBe(true);
   expect(result.changed).toBe(true);
   expect(result.config.dashboards.slice(0, 2)).toEqual(config.dashboards.slice(0, 2));
-  expect(result.config.dashboards[2]!.releases).toHaveLength(2);
+  expect(result.config.dashboards[2]!.releases).toHaveLength(
+    config.dashboards[2]!.releases.length + 1,
+  );
   expect(
     fetch.mock.calls.filter(([url]) => url instanceof URL && url.hostname === "api.github.com"),
   ).toHaveLength(2);
 });
 
 it.each([
-  ["unchanged version", bar("komari", "1.2.0")],
-  ["version rollback", bar("komari", "1.1.0")],
+  ["unchanged version", bar("komari", sources.dashboards[0]!.releases.at(-1)!.version)],
+  ["version rollback", bar("komari", "0.0.0")],
   ["non-strict version", bar("komari", "v2.0.0")],
   ["invalid metadata", bar("komari", "2.0.0", 'homepage="invalid"')],
   [
@@ -143,7 +148,9 @@ it.each([
   const result = await updateDashboards(config);
   expect(result.failed).toBe(true);
   expect(result.config.dashboards[0]).toEqual(config.dashboards[0]);
-  expect(result.config.dashboards[1]!.releases).toHaveLength(2);
+  expect(result.config.dashboards[1]!.releases).toHaveLength(
+    config.dashboards[1]!.releases.length + 1,
+  );
 });
 
 it("pins and caches a remote icon from one successful request", async () => {
