@@ -23,7 +23,7 @@
 - Run full verification with `vp run verify`. With a local server running, use `vp run verify:http -- http://localhost:5173`.
 - Preview deployment with `vp run deploy:dry-run`; deploy with `vp run deploy`; verify a deployment with `vp run verify:http -- https://awesome.metrix.bar --edge-cache`.
 - Void emits Cloudflare Build Output into `.cloudflare/output/v0/`. Deployment scripts use `cf deploy --prebuilt --mode production`, including dry runs. Do not use Wrangler for this output: its dry run can pass while a real deployment aborts. Sign in with `vp exec cf auth login`; cf uses its own credentials.
-- `.cache/`, `.generated/`, `public/avatars/`, `.void/`, `.void-wrangler.jsonc`, `.cloudflare/`, `dist/`, and `.wrangler/` are generated and ignored. Do not edit or commit them; commit `pnpm-lock.yaml`. Initial builds need network access; cached downloads are hash-checked on every use.
+- `.cache/`, `.generated/`, `public/avatars/`, `.void/`, `.void-wrangler.jsonc`, `.cloudflare/`, `dist/`, and `.wrangler/` are generated and ignored. Do not edit or commit them; commit `pnpm-lock.yaml`. Official tools refresh on each build; cached dashboard and icon downloads are hash-checked on every use.
 
 ## Dashboard sources
 
@@ -32,7 +32,7 @@
 - [Codex Resets](https://github.com/0tt0/codex-resets-bar): include both `codex-resets.bar` and `codex-resets-en.bar` using their actual metadata.
 - [JasonChou0v0/metrix-bar-dashboards](https://github.com/JasonChou0v0/metrix-bar-dashboards): files are under `dashboards/`. No upstream license is declared; record `UNLICENSED`. Local Ports requires the upstream macOS collector described in its README; do not execute it during registry generation.
 - Preserve authors, license declarations, and source links. Revalidate upstream examples instead of concatenating their indexes.
-- `registry/sources.json` pins full commits, actual metadata versions, and original-byte SHA-256 hashes. Append releases from oldest to newest; retain history so old download URLs keep working. Official builder and schema downloads are also hash-pinned and require review before updates.
+- `registry/sources.json` pins full commits, actual metadata versions, and original-byte SHA-256 hashes. Append releases from oldest to newest; retain history so old download URLs keep working. Download the official builder and schema without SHA-256 pins; keep dashboard files and remote icons hash-pinned.
 
 ## Registry and proxy constraints
 

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { cacheDir, download } from "../scripts/download.ts";
@@ -16,7 +16,28 @@ function fixture() {
 
 afterEach(() => vi.unstubAllGlobals());
 
-describe("pinned downloads", () => {
+describe("downloads", () => {
+  it("refreshes official tools and retains earlier snapshots", async () => {
+    const tool = { url: `https://example.com/${randomUUID()}.mjs` };
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(new Response("first"))
+        .mockResolvedValueOnce(new Response("updated")),
+    );
+    const first = await download(tool, "mjs");
+    const second = await download(tool, "mjs");
+    try {
+      expect(first.bytes.toString()).toBe("first");
+      expect(second.bytes.toString()).toBe("updated");
+      expect(await readFile(first.path, "utf8")).toBe("first");
+      expect(await readFile(second.path, "utf8")).toBe("updated");
+    } finally {
+      await Promise.all([first, second].map(({ path }) => rm(path, { force: true })));
+    }
+  });
+
   it("reuses verified cached bytes without fetching", async () => {
     const { bytes, pin, path } = fixture();
     await mkdir(directory, { recursive: true });

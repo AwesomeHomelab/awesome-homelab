@@ -6,12 +6,10 @@
   },
   "tools": {
     "builder": {
-      "url": "https://metrix.bar/dashboards/build.js",
-      "sha256": "2f0c2f2daf02b03b94626a78d21d4322856b59b4e04017c0a22adf2a589e23b1"
+      "url": "https://metrix.bar/dashboards/build.js"
     },
     "schema": {
-      "url": "https://metrix.bar/dashboards/schema.json",
-      "sha256": "0058d9d3e8efaaf17a712e86191367378473bf3613a8b1ec39def11c7df6ef2e"
+      "url": "https://metrix.bar/dashboards/schema.json"
     }
   },
   "dashboards": [

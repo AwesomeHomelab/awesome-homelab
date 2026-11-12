@@ -7,15 +7,18 @@ import { describe, expect, it } from "vite-plus/test";
 import sources from "../registry/sources.json";
 import generated from "../.generated/manifest.json";
 import { completeEntry, sha256, validateRegistry } from "../scripts/registry.ts";
+import { download } from "../scripts/download.ts";
 import { buildRegistry } from "../scripts/build-registry.ts";
 import type { Source } from "../scripts/config.ts";
 import type { Manifest, Registry } from "../src/registry.ts";
 
 const manifest: Manifest = generated;
 
-const schema = JSON.parse(
-  await readFile(`.cache/downloads/${sources.tools.schema.sha256}.json`, "utf8"),
-) as object;
+const [builder, schemaFile] = await Promise.all([
+  download(sources.tools.builder, "mjs"),
+  download(sources.tools.schema, "json"),
+]);
+const schema = JSON.parse(schemaFile.bytes.toString()) as object;
 const exec = promisify(execFile);
 
 describe("registry generation", () => {
@@ -30,7 +33,7 @@ describe("registry generation", () => {
       await mkdir(input);
       await writeFile(join(input, "sample.bar"), raw);
       await exec(process.execPath, [
-        `.cache/downloads/${sources.tools.builder.sha256}.mjs`,
+        builder.path,
         "--input",
         input,
         "--output",

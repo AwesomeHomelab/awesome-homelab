@@ -6,24 +6,24 @@ import { INDEX_PATH } from "../src/registry.ts";
 import type { Asset, Dashboard, Manifest, Registry } from "../src/registry.ts";
 import { completeEntry, sha256, sourceURL, validateRegistry } from "./registry.ts";
 import { validateSources } from "./config.ts";
-import type { Release, Source } from "./config.ts";
 import { cacheDir, download } from "./download.ts";
 import { writeAtomic } from "./files.ts";
 
 const exec = promisify(execFile);
 const root = resolve(import.meta.dirname, "..");
 
-async function readEntry(builder: string, source: Source, release: Release): Promise<Dashboard> {
-  const { bytes } = await download(
-    { url: sourceURL(source, release), sha256: release.sha256 },
-    "bar",
-  );
+export async function parseBar(
+  builder: string,
+  bytes: Buffer,
+  path: string,
+  id: string,
+): Promise<Dashboard> {
   const workspace = await mkdtemp(join(cacheDir, "parse-"));
   try {
     const input = join(workspace, "input");
     const output = join(workspace, "output");
     await mkdir(input);
-    await writeFile(join(input, basename(release.path ?? source.path)), bytes);
+    await writeFile(join(input, basename(path)), bytes);
     await exec(process.execPath, [
       builder,
       "--input",
@@ -31,16 +31,16 @@ async function readEntry(builder: string, source: Source, release: Release): Pro
       "--output",
       output,
       "--id",
-      source.id,
+      id,
       "--name",
-      source.id,
+      id,
     ]);
     const registry = JSON.parse(await readFile(join(output, "index.json"), "utf8")) as Registry;
     const entry = registry.dashboards[0];
     if (registry.dashboards.length !== 1) {
-      throw new Error(`Expected exactly one dashboard: ${source.id}`);
+      throw new Error(`Expected exactly one dashboard: ${id}`);
     }
-    return completeEntry(entry, source, release);
+    return entry;
   } finally {
     await rm(workspace, { recursive: true, force: true });
   }
@@ -62,7 +62,15 @@ export async function buildRegistry(
       let latest: Dashboard | undefined;
       // Parse historical releases too: their immutable URLs must survive future deployments.
       for (const release of source.releases) {
-        const entry = await readEntry(builder.path, source, release);
+        const { bytes } = await download(
+          { url: sourceURL(source, release), sha256: release.sha256 },
+          "bar",
+        );
+        const entry = completeEntry(
+          await parseBar(builder.path, bytes, release.path ?? source.path, source.id),
+          source,
+          release,
+        );
         resources[`/dashboards/${entry.file}`] = {
           url: sourceURL(source, release),
           sha256: entry.sha256,

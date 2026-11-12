@@ -19,6 +19,7 @@ const digest = z
   .hash("sha256")
   .refine((value) => value === value.toLowerCase(), "SHA-256 must be lowercase");
 const pin = z.strictObject({ url: httpsURL, sha256: digest });
+const tool = pin.omit({ sha256: true });
 const release = z.strictObject({
   commit: z.string().regex(/^[a-f0-9]{40}$/, "Release must pin a full commit"),
   version: z
@@ -60,7 +61,7 @@ const sources = z.strictObject({
     name: z.string().min(1),
     origin: httpsURL.refine((value) => new URL(value).origin === value, "Expected an HTTPS origin"),
   }),
-  tools: z.strictObject({ builder: pin, schema: pin }),
+  tools: z.strictObject({ builder: tool, schema: tool }),
   dashboards: z.array(source).superRefine((dashboards, ctx) => {
     const ids = new Set<string>();
     for (const [index, dashboard] of dashboards.entries()) {
