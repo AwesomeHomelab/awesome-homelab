@@ -3,6 +3,7 @@ export const authors = Object.entries({
   fatwang2: 134143178,
   "0tt0": 318468762,
   JasonChou0v0: 76592626,
+  zxfccmm4: 17553115,
 }).map(([name, id]) => ({
   name,
   file: `${name}.webp`,
