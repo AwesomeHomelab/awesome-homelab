@@ -39,8 +39,7 @@ export function DashboardDetail({
               <p className="setup">{dashboard.docs}</p>
             ) : (
               <p>
-                Choose Install in Metrix.Bar, then review the dashboard's permissions and inputs in
-                the app.
+                Choose Install in Metrix.Bar, then review the dashboard's permissions in the app.
               </p>
             )}
           </section>

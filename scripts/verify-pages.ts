@@ -95,15 +95,9 @@ export async function verifyPages(
     const url = new URL(path, origin);
     const response = await get(url);
     assert.equal(response.status, 200, `${author}: avatar unavailable`);
-    assert.equal(
-      response.headers.get("Content-Type"),
-      "image/webp",
-      `${author}: avatar must use WebP`,
-    );
     assert.equal(response.headers.get("Cache-Control"), "public, max-age=3600, s-maxage=86400");
     const bytes = Buffer.from(await response.arrayBuffer());
-    assert.equal(bytes.toString("ascii", 0, 4), "RIFF", `${author}: invalid WebP`);
-    assert.equal(bytes.toString("ascii", 8, 12), "WEBP", `${author}: invalid WebP`);
+    assert(bytes.byteLength, `${author}: empty avatar`);
     if (edgeCache) await verifyCache(url, sha256(bytes));
   }
   for (const path of [

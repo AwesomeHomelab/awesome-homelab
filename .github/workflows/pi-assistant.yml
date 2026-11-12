@@ -16,7 +16,7 @@ on:
   push:
     branches: [master]
   workflow_run:
-    workflows: [Update dashboards, CI]
+    workflows: [Update dashboards]
     types: [completed]
 
 permissions:
@@ -49,6 +49,12 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.repository.default_branch }}
+      - uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          node-version-file: .node-version
+          run-install: false
+      - name: Configure formatter
+        run: printf '{}\n' > "$RUNNER_TEMP/pi-format.json"
       - uses: cv/pi-action@b05a90f315da51f1bfc01639c2f3cd4042ef43c6 # v2.2.2
         id: pi
         with:
@@ -66,8 +72,8 @@ jobs:
             Source: {{type}} #{{number}} {{title}}
             {{body}}
             {{diff}}
-            Keep changes minimal and use Conventional Commits; preserve authors, licenses, IDs, releases, original bytes and hashes. Do not commit generated files or expose secrets. Code analysis and git diff --check plus git diff --cached --check suffice; do not execute proposed code, repository scripts, tests, installs, desktop apps or collectors.
-            For Issue code changes, push a NEW automation/pi/<issue>-<run-id>-<attempt> branch using the Issue number, GITHUB_RUN_ID and GITHUB_RUN_ATTEMPT. Include Closes #<issue> in the commit message. Maintainers create and merge PRs themselves.
+            Keep changes minimal and use Conventional Commits; preserve authors, licenses, IDs, releases, original bytes and hashes. Do not commit generated files or expose secrets. Before every commit or push, format added or modified supported text files with vp fmt --config "$RUNNER_TEMP/pi-format.json" --disable-nested-config <files>, then check them with the same command plus --check. Use this trusted formatter configuration, run git diff --check and git diff --cached --check, and restage formatting changes before committing. Do not execute proposed code, repository scripts, tests, installs, desktop apps or collectors.
+            For Issue code changes, push a NEW automation/pi/<dashboard-or-topic>-<issue> branch, for example automation/pi/nezha-158. Use a short lowercase slug starting with a letter; if taken, choose a more specific descriptive slug. Include Closes #<issue> in the commit message. Maintainers create and merge PRs themselves.
             For PRs, act ONLY on open PRs targeting the default branch whose head is in this repository and starts with automation/pi/. If GitHub reports UNKNOWN mergeability, refresh it before deciding. If conflicting, check out the EXISTING head branch, fetch and merge the latest default branch into it, resolve conflicts preserving both accepted changes and the PR's intent, and push a merge commit to that same branch. Never use blanket ours/theirs resolution. Leave clean PRs unchanged.
             Never push to the default branch or force-push. Do not create, review or merge PRs, or edit their metadata. Always report findings, changes and the branch/comparison or PR URL, or a clear reason why nothing changed.
       - name: Record pi response
@@ -79,14 +85,8 @@ jobs:
         if: steps.pi.outputs.success == 'false'
         run: exit 1
   approve-ci:
-    if: >-
-      github.event_name == 'workflow_run' && github.event.workflow_run.name == 'CI'
-      && github.event.workflow_run.path == '.github/workflows/ci.yml'
-      && github.event.workflow_run.conclusion == 'action_required'
-      && github.event.workflow_run.event == 'pull_request'
-      && github.event.workflow_run.actor.login == 'github-actions[bot]'
-      && github.event.workflow_run.head_repository.full_name == github.repository
-      && startsWith(github.event.workflow_run.head_branch, 'automation/pi/')
+    needs: assist
+    if: needs.assist.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -97,17 +97,20 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
-          RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
+          runs=$(gh api --method GET "repos/$GH_REPO/actions/runs" -f event=pull_request -f status=action_required -F per_page=100 --paginate --jq '.workflow_runs[] | select(.path == ".github/workflows/ci.yml" and .actor.login == "github-actions[bot]" and .head_repository.full_name == env.GH_REPO and (.head_branch | startswith("automation/pi/"))) | [.id, .head_sha] | @tsv')
+          if [[ -z "$runs" ]]; then exit 0; fi
           workflow="repos/$GH_REPO/contents/.github/workflows/ci.yml"
           trusted=$(gh api --method GET "$workflow" -f ref="$DEFAULT_BRANCH" --jq .sha)
-          proposed=$(gh api --method GET "$workflow" -f ref="$HEAD_SHA" --jq .sha)
-          if [[ "$trusted" != "$proposed" ]]; then
-            echo "CI workflow changes require maintainer approval."
-            exit 0
-          fi
-          gh api --method POST "repos/$GH_REPO/actions/runs/$RUN_ID/approve"
+          while IFS=$'\t' read -r run_id head_sha; do
+            proposed=$(gh api --method GET "$workflow" -f ref="$head_sha" --jq .sha)
+            if [[ "$trusted" != "$proposed" ]]; then
+              echo "CI workflow changes require maintainer approval: $run_id"
+              continue
+            fi
+            gh api --method POST "repos/$GH_REPO/actions/runs/$run_id/approve"
+            echo "Approved CI run $run_id"
+          done <<< "$runs"
   close-issue:
     if: >-
       github.event_name == 'pull_request_target' && github.event.pull_request.merged
@@ -124,6 +127,6 @@ jobs:
           GH_REPO: ${{ github.repository }}
           HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
-          if [[ "$HEAD_BRANCH" =~ ^automation/pi/([0-9]+)-[0-9]+-[0-9]+$ ]]; then
+          if [[ "$HEAD_BRANCH" =~ ^automation/pi/[a-z][a-z0-9-]*-([0-9]+)$ ]]; then
             gh issue close "${BASH_REMATCH[1]}" --reason completed
           fi

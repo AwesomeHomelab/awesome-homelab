@@ -13,14 +13,7 @@ async function fetchAvatar(url: string, fetchUpstream: typeof fetch): Promise<Ui
     redirect: "error",
     signal: AbortSignal.timeout(15_000),
   });
-  if (
-    response.status !== 200 ||
-    response.headers.get("Content-Type")?.split(";")[0] !== "image/webp"
-  ) {
-    throw new Error(
-      `Expected a WebP avatar, received ${response.status} ${response.headers.get("Content-Type")}`,
-    );
-  }
+  if (response.status !== 200) throw new Error(`Avatar download failed (${response.status})`);
   const bytes = new Uint8Array(await response.arrayBuffer());
   if (!bytes.byteLength) throw new Error("Empty avatar");
   return bytes;

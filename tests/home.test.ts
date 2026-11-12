@@ -20,7 +20,7 @@ const renderDetail = (dashboard: Dashboard, manifest: Manifest) =>
 describe("catalog and dashboard pages", () => {
   it("renders a complete linked catalog without hydration scripts", () => {
     const body = renderToStaticMarkup(createElement(HomePage));
-    expect(body).toContain("Community dashboards for Metrix.Bar.");
+    expect(body).toContain("A registry of dashboards for Metrix.Bar.");
     expect(body).toContain(manifest.registry.name);
     expect(body).toContain(manifest.registryURL);
     expect(body).not.toContain("<script");

@@ -27,26 +27,30 @@ describe("author avatars", () => {
       expect(avatarPath(author)).toBeUndefined();
   });
 
-  it("publishes local WebP files, reuses warm downloads, and refreshes after a day", async () => {
-    const { cache, output } = await temporary();
-    const bytes = new Uint8Array([1, 2, 3]);
-    const upstream = vi
-      .fn<typeof fetch>()
-      .mockImplementation(
-        async () => new Response(bytes, { headers: { "Content-Type": "image/webp" } }),
+  it.each(["image/webp", "image/png", undefined])(
+    "preserves upstream bytes with content type %s, caches and refreshes them",
+    async (contentType) => {
+      const { cache, output } = await temporary();
+      const bytes = new Uint8Array([1, 2, 3]);
+      const upstream = vi.fn<typeof fetch>().mockImplementation(
+        async () =>
+          new Response(bytes, {
+            headers: contentType ? { "Content-Type": contentType } : undefined,
+          }),
       );
-    await buildAvatars(cache, output, upstream);
-    expect(upstream).toHaveBeenCalledTimes(authors.length);
-    expect(upstream).toHaveBeenCalledWith(
-      "https://unavatar.webp.se/github/baranwang",
-      expect.objectContaining({ headers: { Accept: "image/webp" }, redirect: "error" }),
-    );
-    expect(new Uint8Array(await readFile(join(output, "baranwang.webp")))).toEqual(bytes);
-    await buildAvatars(cache, output, upstream);
-    expect(upstream).toHaveBeenCalledTimes(authors.length);
-    await buildAvatars(cache, output, upstream, Date.now() + 86_401_000);
-    expect(upstream).toHaveBeenCalledTimes(authors.length * 2);
-  });
+      await buildAvatars(cache, output, upstream);
+      expect(upstream).toHaveBeenCalledTimes(authors.length);
+      expect(upstream).toHaveBeenCalledWith(
+        "https://unavatar.webp.se/github/baranwang",
+        expect.objectContaining({ headers: { Accept: "image/webp" }, redirect: "error" }),
+      );
+      expect(new Uint8Array(await readFile(join(output, "baranwang.webp")))).toEqual(bytes);
+      await buildAvatars(cache, output, upstream);
+      expect(upstream).toHaveBeenCalledTimes(authors.length);
+      await buildAvatars(cache, output, upstream, Date.now() + 86_401_000);
+      expect(upstream).toHaveBeenCalledTimes(authors.length * 2);
+    },
+  );
 
   it("keeps expired avatars when refreshing fails and retries on the next build", async () => {
     const { cache, output } = await temporary();
@@ -70,11 +74,10 @@ describe("author avatars", () => {
     expect(new Uint8Array(await readFile(join(output, "baranwang.webp")))).toEqual(refreshed);
   });
 
-  it("rejects upstream errors and HTML instead of publishing them as avatars", async () => {
+  it("rejects failed and empty downloads", async () => {
     const { cache, output } = await temporary();
     for (const response of [
       new Response("denied", { status: 403 }),
-      new Response("html", { headers: { "Content-Type": "text/html" } }),
       new Response(null, { headers: { "Content-Type": "image/webp" } }),
     ]) {
       await expect(

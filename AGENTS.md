@@ -2,7 +2,7 @@
 
 ## Project scope
 
-- English is the primary language for project communication, UI copy, comments, and documentation. Keep `README.md` and `README.zh-CN.md` in sync; preserve upstream dashboard metadata in its original language.
+- English is the primary language for project communication, UI copy, comments, and documentation. Keep `README.md` and `README.zh-CN.md` concise and in sync, with a short dashboard list linking to the catalog for setup details. Preserve upstream dashboard metadata in its original language.
 - This is a community registry for [Metrix.Bar](https://metrix.bar/), built with [Void](https://void.cloud/), [Vite+](https://viteplus.dev/), and Cloudflare Workers. The public index stays at `https://awesome.metrix.bar/dashboards/index.json`.
 - Bind the custom domain manually in Cloudflare. Do not declare `routes`; keep `workers_dev: false` and `preview_urls: false` in `void.config.ts`.
 - Serve the registry, `.bar` files, and remote icons through this service. Dashboard scripts retain their original runtime API/CDN connections. Usage, inclusion, and deployment instructions live in the two READMEs.
@@ -15,7 +15,7 @@
 - Void and Cloudflare settings live in `void.config.ts`. React pages live in `src/pages/`; server API routes live in `src/routes/` and import handlers from `void/handler`. Keep reusable React components and CSS in `src/views/`.
 - Use `voidReact()` from `@void/react/plugin` alongside `voidPlugin()`; it includes the React Vite plugin. `output: "static"` prerenders the homepage and dashboard detail pages. Detail URLs are `/dashboards/<id>`; `src/pages/dashboards/[id].server.ts#getPrerenderPaths()` must enumerate every published dashboard. Keep complete page content available without browser JavaScript.
 - Use locally bundled Pico CSS with shared styles in `src/views/site.css` and catalog/detail styles beside their React components. Page-specific canonical URLs, social metadata, and escaped JSON-LD live in `src/seo.ts`; `/sitemap.xml` lists only public pages. JSON-LD is data, not a hydrated island.
-- Author avatars use `https://unavatar.webp.se/github/<username>` through WebP.se, with GitHub usernames listed in `src/authors.ts`. `scripts/build-avatars.ts` downloads WebP images in Node during registry generation, with a one-day local cache, into ignored `public/avatars/`. Keep existing avatars if a refresh fails; a cold cache still requires a successful download. Serve those files locally with a one-day shared cache. Dashboard files and declared dashboard icons remain hash-pinned.
+- Author avatars use `https://unavatar.webp.se/github/<username>` through WebP.se, with GitHub usernames listed in `src/authors.ts`. `scripts/build-avatars.ts` preserves successful, nonempty avatar responses without image format validation in Node during registry generation, with a one-day local cache, into ignored `public/avatars/`. Keep existing avatars if a refresh fails; a cold cache still requires a successful download. Serve those files locally with a one-day shared cache. Dashboard files and declared dashboard icons remain hash-pinned.
 - Generate the registry with `vp run registry:build` and Void types with `vp run types`. Run both before standalone checks or tests after a fresh checkout.
 - Develop with `vp run dev`, build with `vp run build`, and preview with `vp run preview`. Built-in `vp dev` and `vp build` skip registry generation.
 - Check everything with `vp check`; lint with `vp lint`; check formatting with `vp fmt --check`; check types only with `vp check --no-fmt --no-lint`.

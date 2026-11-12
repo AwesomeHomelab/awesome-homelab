@@ -9,12 +9,17 @@ export function Home({ manifest }: { manifest: Manifest }) {
     <Site manifest={manifest}>
       <section className="hero" aria-labelledby="intro">
         <header>
-          <p className="eyebrow">The community collection</p>
-          <h1 id="intro">Community dashboards for Metrix.Bar.</h1>
-          <p className="lead">Track servers, AI usage, and markets at a glance.</p>
-          <p>Find a dashboard, read its setup, and install it in Metrix.Bar.</p>
+          <p className="eyebrow">Community dashboards</p>
+          <h1 id="intro">A registry of dashboards for Metrix.Bar.</h1>
+          <p className="lead">
+            Browse community dashboards, check what each one needs, and install it from inside the
+            app.
+          </p>
+          <p>
+            Each dashboard page shows its author, version, and license, with links to the project.
+          </p>
           <a href="#dashboards">
-            Explore the collection <span aria-hidden="true">↓</span>
+            Browse the catalog <span aria-hidden="true">↓</span>
           </a>
         </header>
         <article className="registry-panel">
@@ -34,8 +39,8 @@ export function Home({ manifest }: { manifest: Manifest }) {
       <section aria-labelledby="dashboards">
         <header className="section-heading">
           <div>
-            <h2 id="dashboards">Find your next dashboard</h2>
-            <p>Check setup instructions and requirements before installing.</p>
+            <h2 id="dashboards">All dashboards</h2>
+            <p>Setup instructions and requirements are on each dashboard page.</p>
           </div>
           <small>{manifest.registry.dashboards.length} dashboards</small>
         </header>

@@ -2,7 +2,7 @@ import type { HeadDescriptor } from "void";
 import type { Dashboard, Manifest } from "./registry.ts";
 
 export const HOME_DESCRIPTION =
-  "Discover community dashboards for Metrix.Bar. Browse server monitoring, AI usage, market data, calendars, and more. Install from one registry.";
+  "Browse community dashboards for Metrix.Bar, check setup requirements, and add the registry to install them and get updates in the app.";
 
 export function dashboardPath(id: string): string {
   return `/dashboards/${encodeURIComponent(id)}`;
