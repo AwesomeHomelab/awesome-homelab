@@ -32,6 +32,7 @@
 - [Codex Resets](https://github.com/0tt0/codex-resets-bar): include both `codex-resets.bar` and `codex-resets-en.bar` using their actual metadata.
 - [JasonChou0v0/metrix-bar-dashboards](https://github.com/JasonChou0v0/metrix-bar-dashboards): files are under `dashboards/`. No upstream license is declared; record `UNLICENSED`. Local Ports requires the upstream macOS collector described in its README; do not execute it during registry generation.
 - [zxfccmm4/stevefans-bar](https://github.com/zxfccmm4/stevefans-bar): the root `stevefans.bar` declares MIT and embeds its icon. It reads public X follower counts from the FxTwitter API with avatars from unavatar.io, so generation needs no extra steps.
+- [bluenight91/nezha-metrix-bar](https://github.com/bluenight91/nezha-metrix-bar): the root `nezha.bar` declares AGPL-3.0-only and embeds its icon. It reads Nezha Monitoring V2 data from the `baseURL` input with an optional PAT secret and needs no local collector, so generation needs no extra steps.
 - Preserve authors, license declarations, and source links. Revalidate upstream examples instead of concatenating their indexes.
 - `registry/sources.json` pins full commits, actual metadata versions, and original-byte SHA-256 hashes. Append releases from oldest to newest; retain history so old download URLs keep working. Download the official builder and schema without SHA-256 pins; keep dashboard files and remote icons hash-pinned.
 

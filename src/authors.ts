@@ -1,4 +1,4 @@
-export const authors = ["baranwang", "fatwang2", "0tt0", "JasonChou0v0", "zxfccmm4"].map(
+export const authors = ["baranwang", "fatwang2", "0tt0", "JasonChou0v0", "zxfccmm4", "bluenight91"].map(
   (name) => ({
     name,
     file: `${name}.webp`,
