@@ -31,6 +31,7 @@
 - [Pulse](https://github.com/fatwang2/Pulse/blob/main/metrix/README.md): resolve `metrix/index.json` and `metrix/pulse.bar` from the `metrix/` directory, not the repository root.
 - [Codex Resets](https://github.com/0tt0/codex-resets-bar): include both `codex-resets.bar` and `codex-resets-en.bar` using their actual metadata.
 - [JasonChou0v0/metrix-bar-dashboards](https://github.com/JasonChou0v0/metrix-bar-dashboards): files are under `dashboards/`. No upstream license is declared; record `UNLICENSED`. Local Ports requires the upstream macOS collector described in its README; do not execute it during registry generation.
+- [zxfccmm4/stevefans-bar](https://github.com/zxfccmm4/stevefans-bar): the root `stevefans.bar` declares MIT and embeds its icon. It reads public X follower counts from the FxTwitter API with avatars from unavatar.io, so generation needs no extra steps.
 - Preserve authors, license declarations, and source links. Revalidate upstream examples instead of concatenating their indexes.
 - `registry/sources.json` pins full commits, actual metadata versions, and original-byte SHA-256 hashes. Append releases from oldest to newest; retain history so old download URLs keep working. Download the official builder and schema without SHA-256 pins; keep dashboard files and remote icons hash-pinned.
 
