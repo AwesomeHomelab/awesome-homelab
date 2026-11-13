@@ -5,6 +5,7 @@
 }
 .container {
   max-width: 1120px;
+  padding-inline: var(--pico-spacing);
 }
 .site-header {
   padding-top: 1rem;
