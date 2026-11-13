@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { z } from "zod";
-import { parseBar } from "./build-registry.ts";
+import { parseBar } from "./parse-bar.ts";
 import { validateSources } from "./config.ts";
 import type { Release } from "./config.ts";
 import { cacheDir, download } from "./download.ts";
@@ -41,16 +41,14 @@ export async function updateDashboards(input: unknown) {
       const previous = source.releases.at(-1)!;
       if (!heads.has(source.repository)) heads.set(source.repository, head(source.repository));
       const commit = (await heads.get(source.repository))!;
-      const { bytes } = await download({ url: sourceURL(source, { ...previous, commit }) }, "bar");
+      const { bytes } = await download({ url: sourceURL(source, { commit }) }, "bar");
       const hash = sha256(bytes);
       if (hash === previous.sha256) continue;
-      const entry = await parseBar(builder.path, bytes, previous.path ?? source.path, source.id);
-      if (entry.protocol_version !== "0") throw new Error("Unsupported dashboard protocol");
+      const entry = await parseBar(builder.path, bytes, source.path, source.id);
       const release: Release = {
         commit,
         version: entry.version,
         sha256: hash,
-        ...(previous.path ? { path: previous.path } : {}),
       };
       if (entry.icon && /^(?:https?:|\/\/)/i.test(entry.icon)) {
         const response = await request(entry.icon);

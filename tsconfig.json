@@ -20,6 +20,7 @@
     "scripts/**/*.ts",
     "tests/**/*.ts",
     "vite.config.ts",
-    "void.config.ts"
+    "void.config.ts",
+    "panda.config.ts"
   ]
 }

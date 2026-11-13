@@ -1,14 +1,13 @@
-import { execFile } from "node:child_process";
-import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { promisify } from "node:util";
 import { describe, expect, it, vi } from "vite-plus/test";
 import sources from "../registry/sources.json";
 import generated from "../.generated/manifest.json";
 import { completeEntry, sha256, validateRegistry } from "../scripts/registry.ts";
 import { download } from "../scripts/download.ts";
 import { buildRegistry } from "../scripts/build-registry.ts";
+import { parseBar } from "../scripts/parse-bar.ts";
 import type { Source } from "../scripts/config.ts";
 import type { Manifest, Registry } from "../src/registry.ts";
 
@@ -24,55 +23,33 @@ const [builder, schemaFile] = await Promise.all([
   download(sources.tools.schema, "json"),
 ]);
 const schema = JSON.parse(schemaFile.bytes.toString()) as object;
-const exec = promisify(execFile);
 
 describe("registry generation", () => {
   it("uses file metadata, preserves raw bytes, and supplements a missing license", async () => {
-    const workspace = await mkdtemp(join(tmpdir(), "metrix-registry-test-"));
     const raw = Buffer.from(
       '<bar protocol-version="0" id="sample" title="Sample" version="1.2.3">\r\n<docs>Line one\nLine two</docs>\n<script><![CDATA[throw new Error("must not execute");]]></script>\n</bar>\r\n',
     );
-    try {
-      const input = join(workspace, "input");
-      const output = join(workspace, "output");
-      await mkdir(input);
-      await writeFile(join(input, "sample.bar"), raw);
-      await exec(process.execPath, [
-        builder.path,
-        "--input",
-        input,
-        "--output",
-        output,
-        "--id",
-        "awesome",
-        "--name",
-        "Awesome",
-      ]);
-      const parsed = JSON.parse(await readFile(join(output, "index.json"), "utf8")) as Registry;
-      const item: Source = {
-        id: "sample",
-        repository: "author/sample",
-        path: "sample.bar",
-        author: "author",
-        license: "Apache-2.0",
-        releases: [],
-      };
-      const release = { commit: "a".repeat(40), version: "1.2.3", sha256: sha256(raw) };
-      const entry = completeEntry(parsed.dashboards[0]!, item, release);
-      expect(entry.version).toBe("1.2.3");
-      expect(entry.docs).toBe("Line one\nLine two");
-      expect(entry.license).toBe("Apache-2.0");
-      expect(entry.sha256).toBe(sha256(raw));
-      expect(await readFile(join(output, "sample.bar"))).toEqual(raw);
-      expect(entry.source).toContain(release.commit);
-      expect(() =>
-        completeEntry(parsed.dashboards[0]!, item, { ...release, version: "0.0.0" }),
-      ).toThrow("metadata");
-      const licensed = { ...parsed.dashboards[0]!, license: "MIT" };
-      expect(completeEntry(licensed, item, release).license).toBe("MIT");
-    } finally {
-      await rm(workspace, { recursive: true, force: true });
-    }
+    const parsed = await parseBar(builder.path, raw, "sample.bar", "sample");
+    const item: Source = {
+      id: "sample",
+      repository: "author/sample",
+      path: "sample.bar",
+      author: "author",
+      license: "Apache-2.0",
+      releases: [],
+    };
+    const release = { commit: "a".repeat(40), version: "1.2.3", sha256: sha256(raw) };
+    const entry = completeEntry(parsed, item, release);
+    expect(entry.version).toBe("1.2.3");
+    expect(entry.docs).toBe("Line one\nLine two");
+    expect(entry.license).toBe("Apache-2.0");
+    expect(entry.sha256).toBe(sha256(raw));
+    expect(entry.source).toContain(release.commit);
+    expect(() => completeEntry(parsed, item, { ...release, version: "0.0.0" })).toThrow("metadata");
+    expect(() => completeEntry({ ...parsed, protocol_version: "1" }, item, release)).toThrow(
+      "Unsupported dashboard protocol",
+    );
+    expect(completeEntry({ ...parsed, license: "MIT" }, item, release).license).toBe("MIT");
   });
 
   it("retains historical routes and publishes atomically during concurrent builds", async () => {

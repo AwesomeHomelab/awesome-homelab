@@ -1,10 +1,14 @@
 import { defineHandler } from "void/handler";
 import manifest from "../../.generated/manifest.json";
+import { dashboardPath, locales, localePath } from "../i18n.ts";
 import { PAGE_CACHE } from "../registry.ts";
-import { dashboardPath, siteURL } from "../seo.ts";
+import { siteURL } from "../seo.ts";
 
 export const GET = defineHandler(() => {
-  const paths = ["/", ...manifest.registry.dashboards.map(({ id }) => dashboardPath(id))];
+  const paths = locales.flatMap((locale) => [
+    localePath("/", locale),
+    ...manifest.registry.dashboards.map(({ id }) => dashboardPath(id, locale)),
+  ]);
   const urls = paths
     .map(
       (path) =>

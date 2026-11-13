@@ -1,0 +1,80 @@
+{
+  "skip_content": "Ir para o conteúdo",
+  "main_navigation": "Navegação principal",
+  "dashboards": "Painéis",
+  "site_github_label": "Awesome.Metrix.Bar no GitHub",
+  "footer_description": "Painéis da comunidade para o Metrix.Bar.",
+  "registry_json": "Registro JSON",
+  "registry_guide": "Guia de registros",
+  "language_picker": "Idioma",
+  "hero_eyebrow": "Painéis da comunidade",
+  "hero_heading": "Um registro de painéis para o Metrix.Bar.",
+  "hero_description": "Explore os painéis da comunidade, confira os requisitos e instale-os pelo aplicativo.",
+  "hero_details": "Cada página mostra o autor, a versão e a licença do painel, além de links para o projeto.",
+  "browse_catalog": "Explorar o catálogo",
+  "registry_heading": "Explorar no Metrix.Bar",
+  "registry_description": "Adicione este registro para explorar painéis e verificar atualizações no aplicativo.",
+  "add_registry": "Adicionar registro",
+  "registry_url_label": "Ou cole esta URL em Configurações → Registros",
+  "platform_requirements": " para macOS, Windows ou Linux (experimental) é necessário. Confirme no aplicativo.",
+  "catalog_heading": "Todos os painéis",
+  "sort_description": "Ordenados por estrelas do GitHub por painel do mesmo repositório.",
+  "dashboard_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} painel",
+        "countPlural=other": "{count} painéis"
+      }
+    }
+  ],
+  "fallback_description": "Um painel da comunidade para o Metrix.Bar.",
+  "details": "Detalhes",
+  "view_details": "Ver detalhes de {name}",
+  "view_repository": "Ver {repository} no GitHub",
+  "install": "Instalar",
+  "install_named": "Instalar {name} no Metrix.Bar",
+  "breadcrumb": "Caminho de navegação",
+  "github_project": "Projeto no GitHub",
+  "install_heading": "Instalar este painel",
+  "install_in_app": "Instalar no Metrix.Bar",
+  "download_bar": "Baixar .bar",
+  "install_requirement": "Requer o Metrix.Bar. Confirme a instalação no aplicativo.",
+  "setup_heading": "Configuração e uso",
+  "getting_started": "Primeiros passos",
+  "setup_fallback": "Escolha “Instalar no Metrix.Bar” e confira as permissões do painel no aplicativo.",
+  "updates_heading": "Manter atualizado",
+  "updates_description": "Instale por este registro para verificar atualizações no Metrix.Bar. Você escolhe quando aplicá-las.",
+  "verify_download": "Verificar o download",
+  "verify_description": "Compare o SHA-256 do arquivo baixado com o desta versão.",
+  "browse_all": "Explorar todos os painéis",
+  "details_heading": "Detalhes do painel",
+  "author": "Autor",
+  "version": "Versão",
+  "dashboard_id": "ID do painel",
+  "category": "Categoria",
+  "license": "Licença",
+  "license_undeclared": "Não declarada",
+  "project_homepage": "Página do projeto",
+  "source_code": "Código-fonte",
+  "stars_unavailable": "{repository}: estrelas do GitHub indisponíveis",
+  "stars_count": [
+    {
+      "declarations": [
+        "input repository",
+        "input value",
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{repository}: {value} estrela do GitHub",
+        "countPlural=other": "{repository}: {value} estrelas do GitHub"
+      }
+    }
+  ],
+  "home_title": "{site} — Painéis do Metrix.Bar",
+  "home_description": "Explore painéis da comunidade para o Metrix.Bar, confira os requisitos e adicione o registro para instalá-los e receber atualizações no aplicativo.",
+  "dashboard_fallback_description": "Instale {name}, um painel da comunidade para o Metrix.Bar."
+}

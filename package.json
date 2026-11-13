@@ -4,8 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare": "panda codegen && vp run messages:build",
+    "messages:build": "paraglide-js compile --project ./project.inlang",
+    "styles": "panda codegen",
     "registry:build": "node scripts/build-registry.ts && node scripts/build-avatars.ts",
-    "types": "void prepare",
+    "registry:history": "node scripts/verify-history.ts",
+    "types": "panda codegen && vp run messages:build && void prepare",
     "dev": "vp run registry:build && vp dev",
     "build": "vp run registry:build && vp build",
     "check": "vp check",
@@ -17,13 +21,18 @@
     "verify:http": "node scripts/verify-http.ts"
   },
   "dependencies": {
-    "@picocss/pico": "^2.1.1",
+    "@ui-sdk/core": "^0.1.0-beta.1",
+    "@ui-sdk/react": "^0.1.0-beta.1",
     "@void/react": "^1.7.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
   "devDependencies": {
     "@cloudflare/vitest-plugin": "^1.6.0",
+    "@inlang/paraglide-js": "^3.2.2",
+    "@pandacss/dev": "^2.5.0",
+    "@pandacss/preset-base": "^2.5.0",
+    "@pandacss/preset-panda": "^2.5.0",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
@@ -32,6 +41,7 @@
     "ajv-formats": "^3.0.1",
     "cf": "^1.0.0-beta.28",
     "cheerio": "^1.2.0",
+    "postcss": "^8.5.32",
     "semver": "^7.8.6",
     "typescript": "^7.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@^1.5.0",

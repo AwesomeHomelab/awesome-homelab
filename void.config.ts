@@ -21,7 +21,7 @@ export default defineConfig({
   routing: { isr: false },
   cloudflare: {
     name: "awesome-metrix-bar",
-    compatibility_date: "2026-11-08",
+    compatibility_date: "2026-11-04",
     compatibility_flags: ["nodejs_als"],
     workers_dev: false,
     preview_urls: false,

@@ -30,7 +30,20 @@ describe("source configuration", () => {
     expect(() => validateSources(withReleases(item))).not.toThrow();
   });
 
-  it.each(["v1.0.0", "1.0", "1.0.0 "])(
+  it.each(["2.0.0+build.4", "2.0.0-beta.1+build.4"])("accepts strict SemVer %s", (version) => {
+    const item = source();
+    item.releases.push({ commit: "b".repeat(40), version, sha256: "b".repeat(64) });
+    expect(() => validateSources(withReleases(item))).not.toThrow();
+  });
+
+  it("requires a precedence increase when build metadata and bytes change", () => {
+    const item = source();
+    item.releases[0]!.version = "2.0.0+first";
+    item.releases.push({ commit: "b".repeat(40), version: "2.0.0+second", sha256: "b".repeat(64) });
+    expect(() => validateSources(withReleases(item))).toThrow("Same version has different bytes");
+  });
+
+  it.each(["v1.0.0", "1.0", "1.0.0 ", " 1.0.0", "01.0.0", "1.0.0+"])(
     "rejects non-strict SemVer %s in release history",
     (version) => {
       const item = source();

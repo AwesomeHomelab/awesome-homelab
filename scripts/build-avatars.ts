@@ -29,13 +29,13 @@ export async function buildAvatars(
     const path = join(cache, author.file);
     const cached = existsSync(path) ? await readFile(path) : undefined;
     let bytes: Uint8Array;
-    if (cached && now - (await stat(path)).mtimeMs < maxAge) {
+    if (cached?.byteLength && now - (await stat(path)).mtimeMs < maxAge) {
       bytes = cached;
     } else {
       try {
         bytes = await fetchAvatar(author.url, fetchUpstream);
       } catch (error) {
-        if (!cached) throw error;
+        if (!cached?.byteLength) throw error;
         console.warn(`Avatar refresh failed; using cached ${author.name}.`, error);
         bytes = cached;
       }

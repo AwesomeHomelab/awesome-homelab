@@ -4,6 +4,8 @@
 
 A community registry of dashboards for [Metrix.Bar](https://metrix.bar/) on macOS, Windows, and Linux (experimental). Browse them all at [awesome.metrix.bar](https://awesome.metrix.bar/).
 
+Use the language picker to browse in English, Simplified or Traditional Chinese, Japanese, Korean, French, Spanish, German, or Portuguese. Dashboard descriptions and setup notes keep their original language.
+
 ## Install a dashboard
 
 Choose **Add registry** on the site, or paste this URL into Metrix.Bar's **Settings → Registries**:
@@ -46,7 +48,7 @@ vp run verify
 vp run dev
 ```
 
-The development server runs at `http://localhost:5173/`.
+The development server runs at `http://localhost:5173/`. Translate UI text in `messages/<locale>.json`; Paraglide compiles messages during development and builds. Run `vp run messages:build` before standalone checks after editing translations.
 
 Project stars refresh during builds with a 24-hour local cache in `.cache/projects/`. Set `GH_TOKEN` for authenticated GitHub requests; CI uses its built-in token. Failed requests keep cached counts; unavailable counts show `—` and sort last. The live catalog updates on deployment.
 

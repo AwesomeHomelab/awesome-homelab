@@ -10,15 +10,16 @@ export function sha256(bytes: Uint8Array | string): string {
   return createHash("sha256").update(bytes).digest("hex");
 }
 
-function sourcePath(source: Source, release: Release): string {
+function sourcePath(source: Source, release: Pick<Release, "path">): string {
   return (release.path ?? source.path).split("/").map(encodeURIComponent).join("/");
 }
 
-export function sourceURL(source: Source, release: Release): string {
+export function sourceURL(source: Source, release: Pick<Release, "commit" | "path">): string {
   return `https://raw.githubusercontent.com/${source.repository}/${release.commit}/${sourcePath(source, release)}`;
 }
 
 export function completeEntry(entry: Dashboard, source: Source, release: Release): Dashboard {
+  if (entry.protocol_version !== "0") throw new Error("Unsupported dashboard protocol");
   if (
     entry.id !== source.id ||
     entry.version !== release.version ||

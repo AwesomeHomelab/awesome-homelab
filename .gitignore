@@ -1,6 +1,12 @@
 node_modules/
+.agents/skills/
+skills-lock.json
 .cache/
 .generated/
+styled-system/
+src/paraglide/
+project.inlang/cache/
+project.inlang/.gitignore
 public/avatars/
 dist/
 .wrangler/

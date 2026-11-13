@@ -1,15 +1,46 @@
-import "./project-stars.css";
+import { css, cx } from "../../styled-system/css";
+import type { Locale } from "../i18n.ts";
+import * as m from "../paraglide/messages.js";
 
-export function ProjectStars({ repository, stars }: { repository: string; stars: number | null }) {
-  const value = stars?.toLocaleString("en-US") ?? "—";
+export function ProjectStars({
+  repository,
+  stars,
+  locale,
+}: {
+  repository: string;
+  stars: number | null;
+  locale: Locale;
+}) {
+  const value = stars?.toLocaleString(locale) ?? "—";
   const label =
     stars === null
-      ? `${repository}: GitHub stars unavailable`
-      : `${repository}: ${value} GitHub stars`;
+      ? m.stars_unavailable({ repository }, { locale })
+      : m.stars_count({ repository, value, count: stars }, { locale });
   const width = 28 + Math.max(28, value.length * 7 + 12);
   return (
     <a
-      className="project-stars"
+      className={cx(
+        "project-stars",
+        css({
+          display: "inline-flex",
+          flexShrink: "0",
+          minHeight: "6",
+          color: "fg",
+          rounded: "sm",
+          "& rect": { fill: "token(colors.bg.subtle)", stroke: "token(colors.border.strong)" },
+          "& path": {
+            fill: "token(colors.accent)",
+            stroke: "token(colors.border.strong)",
+            strokeWidth: "1px",
+          },
+          "& text": {
+            fill: "currentColor",
+            fontFamily: "mono",
+            fontSize: "11px",
+            fontWeight: "semibold",
+          },
+        }),
+      )}
       href={`https://github.com/${repository}`}
       aria-label={label}
       title={label}

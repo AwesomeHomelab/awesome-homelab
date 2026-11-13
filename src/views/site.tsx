@@ -1,26 +1,107 @@
 import type { ReactNode } from "react";
+import { css, cx } from "../../styled-system/css";
+import { localePath, type Locale } from "../i18n.ts";
+import * as m from "../paraglide/messages.js";
 import type { Manifest } from "../registry.ts";
-import "@picocss/pico/css/pico.jade.min.css";
+import { LanguagePicker } from "./language-picker.tsx";
 import "./site.css";
 
-export function Site({ manifest, children }: { manifest: Manifest; children: ReactNode }) {
+const container = css({
+  width: "full",
+  maxWidth: "1200px",
+  mx: "auto",
+  px: { base: "5", md: "8" },
+});
+
+export function Site({
+  manifest,
+  locale,
+  path = "/",
+  children,
+}: {
+  manifest: Manifest;
+  locale: Locale;
+  path?: string;
+  children: ReactNode;
+}) {
   return (
     <>
-      <a className="skip-link" href="#main">
-        Skip to content
+      <a
+        className={css({
+          position: "absolute",
+          top: "4",
+          left: "4",
+          zIndex: "10",
+          p: "3",
+          bg: "accent",
+          color: "accent.fg",
+          rounded: "md",
+          transform: "translateY(-200%)",
+          _focus: { transform: "translateY(0)" },
+        })}
+        href="#main"
+      >
+        {m.skip_content({}, { locale })}
       </a>
-      <header className="container site-header">
-        <nav aria-label="Main navigation">
-          <ul>
+      <header className={cx(container, css({ py: { base: "5", md: "7" } }))}>
+        <nav
+          className={css({
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "4",
+            flexWrap: "wrap",
+          })}
+          aria-label={m.main_navigation({}, { locale })}
+        >
+          <a
+            className={css({
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "2.5",
+              fontWeight: "800",
+              fontSize: "lg",
+              letterSpacing: "tight",
+              textDecoration: "none",
+            })}
+            href={localePath("/", locale)}
+          >
+            <span
+              aria-hidden="true"
+              className={css({
+                width: "3",
+                height: "3",
+                bg: "accent",
+                borderWidth: "2px",
+                borderColor: "border.strong",
+                rounded: "sm",
+                flexShrink: "0",
+              })}
+            />
+            {manifest.registry.name}
+          </a>
+          <ul
+            className={css({
+              display: "flex",
+              flexWrap: "wrap",
+              width: { base: "full", sm: "auto" },
+              alignItems: "center",
+              gap: { base: "4", md: "6" },
+              listStyle: "none",
+              fontSize: "sm",
+              fontWeight: "semibold",
+              "& a": {
+                display: "inline-flex",
+                alignItems: "center",
+                minHeight: "8",
+                whiteSpace: "nowrap",
+                textDecoration: "none",
+                _hover: { textDecoration: "underline" },
+              },
+            })}
+          >
             <li>
-              <a className="brand" href="/">
-                {manifest.registry.name}
-              </a>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <a href="/#dashboards">Dashboards</a>
+              <a href={`${localePath("/", locale)}#dashboards`}>{m.dashboards({}, { locale })}</a>
             </li>
             <li>
               <a href="https://metrix.bar/">
@@ -29,10 +110,9 @@ export function Site({ manifest, children }: { manifest: Manifest; children: Rea
             </li>
             <li>
               <a
-                className="repository-link"
                 href="https://github.com/agili-app/Awesome.Metrix.Bar"
-                aria-label="Awesome.Metrix.Bar on GitHub"
-                title="Awesome.Metrix.Bar on GitHub"
+                aria-label={m.site_github_label({}, { locale })}
+                title={m.site_github_label({}, { locale })}
               >
                 <svg
                   width="20"
@@ -45,18 +125,38 @@ export function Site({ manifest, children }: { manifest: Manifest; children: Rea
                 </svg>
               </a>
             </li>
+            <li className={css({ marginLeft: "auto" })}>
+              <LanguagePicker locale={locale} path={path} />
+            </li>
           </ul>
         </nav>
       </header>
-      <main id="main" className="container">
+      <main id="main" className={container}>
         {children}
       </main>
-      <footer className="container site-footer">
-        <small>Community dashboards for Metrix.Bar.</small>
-        <small>
-          <a href="/dashboards/index.json">Registry JSON</a> ·{" "}
-          <a href="https://metrix.bar/docs/registries.md">Registry guide</a>
-        </small>
+      <footer
+        className={cx(
+          container,
+          css({
+            mt: "16",
+            py: "8",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "3",
+            color: "fg.muted",
+            fontSize: "sm",
+            borderTopWidth: "1px",
+            borderColor: "border",
+          }),
+        )}
+      >
+        <p>{m.footer_description({}, { locale })}</p>
+        <p>
+          <a href="/dashboards/index.json">{m.registry_json({}, { locale })}</a> ·{" "}
+          <a href="https://metrix.bar/docs/registries.md">{m.registry_guide({}, { locale })}</a>
+        </p>
       </footer>
     </>
   );

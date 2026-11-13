@@ -1,0 +1,80 @@
+{
+  "skip_content": "Aller au contenu",
+  "main_navigation": "Navigation principale",
+  "dashboards": "Tableaux de bord",
+  "site_github_label": "Awesome.Metrix.Bar sur GitHub",
+  "footer_description": "Tableaux de bord communautaires pour Metrix.Bar.",
+  "registry_json": "Registre JSON",
+  "registry_guide": "Guide des registres",
+  "language_picker": "Langue",
+  "hero_eyebrow": "Tableaux de bord communautaires",
+  "hero_heading": "Un registre de tableaux de bord pour Metrix.Bar.",
+  "hero_description": "Parcourez les tableaux de bord de la communauté, vérifiez leurs prérequis et installez-les depuis l’application.",
+  "hero_details": "Chaque page présente l’auteur, la version et la licence du tableau de bord, ainsi que les liens vers le projet.",
+  "browse_catalog": "Parcourir le catalogue",
+  "registry_heading": "Parcourir dans Metrix.Bar",
+  "registry_description": "Ajoutez ce registre pour parcourir les tableaux de bord et rechercher des mises à jour dans l’application.",
+  "add_registry": "Ajouter le registre",
+  "registry_url_label": "Ou collez cette URL dans Réglages → Registres",
+  "platform_requirements": " pour macOS, Windows ou Linux (expérimental) est requis. Confirmez dans l’application.",
+  "catalog_heading": "Tous les tableaux de bord",
+  "sort_description": "Classés par nombre d’étoiles GitHub par tableau de bord d’un même dépôt.",
+  "dashboard_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} tableau de bord",
+        "countPlural=other": "{count} tableaux de bord"
+      }
+    }
+  ],
+  "fallback_description": "Un tableau de bord communautaire pour Metrix.Bar.",
+  "details": "Détails",
+  "view_details": "Voir les détails de {name}",
+  "view_repository": "Voir {repository} sur GitHub",
+  "install": "Installer",
+  "install_named": "Installer {name} dans Metrix.Bar",
+  "breadcrumb": "Fil d’Ariane",
+  "github_project": "Projet GitHub",
+  "install_heading": "Installer ce tableau de bord",
+  "install_in_app": "Installer dans Metrix.Bar",
+  "download_bar": "Télécharger le fichier .bar",
+  "install_requirement": "Nécessite Metrix.Bar. Confirmez l’installation dans l’application.",
+  "setup_heading": "Configuration et utilisation",
+  "getting_started": "Premiers pas",
+  "setup_fallback": "Choisissez « Installer dans Metrix.Bar », puis vérifiez les autorisations du tableau de bord dans l’application.",
+  "updates_heading": "Garder à jour",
+  "updates_description": "Installez depuis ce registre pour rechercher des mises à jour dans Metrix.Bar. Vous choisissez quand les appliquer.",
+  "verify_download": "Vérifier le téléchargement",
+  "verify_description": "Comparez le SHA-256 du fichier téléchargé à celui de cette version.",
+  "browse_all": "Parcourir tous les tableaux de bord",
+  "details_heading": "Détails du tableau de bord",
+  "author": "Auteur",
+  "version": "Version",
+  "dashboard_id": "ID du tableau de bord",
+  "category": "Catégorie",
+  "license": "Licence",
+  "license_undeclared": "Non déclarée",
+  "project_homepage": "Site du projet",
+  "source_code": "Code source",
+  "stars_unavailable": "{repository} : nombre d’étoiles GitHub indisponible",
+  "stars_count": [
+    {
+      "declarations": [
+        "input repository",
+        "input value",
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{repository} : {value} étoile GitHub",
+        "countPlural=other": "{repository} : {value} étoiles GitHub"
+      }
+    }
+  ],
+  "home_title": "{site} — Tableaux de bord Metrix.Bar",
+  "home_description": "Parcourez les tableaux de bord communautaires pour Metrix.Bar, vérifiez les prérequis et ajoutez le registre pour les installer et recevoir les mises à jour dans l’application.",
+  "dashboard_fallback_description": "Installez {name}, un tableau de bord communautaire pour Metrix.Bar."
+}

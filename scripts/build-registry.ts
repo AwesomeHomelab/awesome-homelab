@@ -1,51 +1,15 @@
-import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { basename, join, resolve } from "node:path";
-import { promisify } from "node:util";
+import { readFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import { INDEX_PATH } from "../src/registry.ts";
 import type { Asset, Dashboard, Manifest, Registry } from "../src/registry.ts";
 import { completeEntry, sha256, sourceURL, validateRegistry } from "./registry.ts";
 import { validateSources } from "./config.ts";
-import { cacheDir, download } from "./download.ts";
+import { download } from "./download.ts";
+import { parseBar } from "./parse-bar.ts";
 import { writeAtomic } from "./files.ts";
 import { buildStars } from "./build-stars.ts";
 
-const exec = promisify(execFile);
 const root = resolve(import.meta.dirname, "..");
-
-export async function parseBar(
-  builder: string,
-  bytes: Buffer,
-  path: string,
-  id: string,
-): Promise<Dashboard> {
-  const workspace = await mkdtemp(join(cacheDir, "parse-"));
-  try {
-    const input = join(workspace, "input");
-    const output = join(workspace, "output");
-    await mkdir(input);
-    await writeFile(join(input, basename(path)), bytes);
-    await exec(process.execPath, [
-      builder,
-      "--input",
-      input,
-      "--output",
-      output,
-      "--id",
-      id,
-      "--name",
-      id,
-    ]);
-    const registry = JSON.parse(await readFile(join(output, "index.json"), "utf8")) as Registry;
-    const entry = registry.dashboards[0];
-    if (registry.dashboards.length !== 1) {
-      throw new Error(`Expected exactly one dashboard: ${id}`);
-    }
-    return entry;
-  } finally {
-    await rm(workspace, { recursive: true, force: true });
-  }
-}
 
 export async function buildRegistry(
   input: unknown,

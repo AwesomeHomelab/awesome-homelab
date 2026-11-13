@@ -35,7 +35,7 @@ function fixture(count = 2) {
       return new Response(iconBytes, { headers: { "content-type": "image/svg+xml" } });
     }
     for (const source of config.dashboards) {
-      if (url === sourceURL(source, { ...source.releases.at(-1)!, commit })) {
+      if (url === sourceURL(source, { commit })) {
         return new Response(files.get(source.id));
       }
     }
@@ -72,6 +72,27 @@ it("appends actual releases while preserving history and sharing a repository sn
   expect(
     fetch.mock.calls.filter(([url]) => url instanceof URL && url.hostname === "api.github.com"),
   ).toHaveLength(1);
+});
+
+it("tracks the current source path while retaining historical path overrides", async () => {
+  const { config, fetch } = fixture(1);
+  const source = config.dashboards[0]!;
+  source.path = "dashboards/renamed.bar";
+  source.releases[0]!.path = "legacy.bar";
+  const result = await updateDashboards(config);
+  expect(result.failed).toBe(false);
+  expect(result.changed).toBe(true);
+  expect(result.config.dashboards[0]!.releases[0]!.path).toBe("legacy.bar");
+  expect(result.config.dashboards[0]!.releases.at(-1)).not.toHaveProperty("path");
+  expect(fetch).toHaveBeenCalledWith(sourceURL(source, { commit }), expect.anything());
+});
+
+it.each(["9.0.0+build.4", "9.0.0-beta.1+build.4"])("publishes SemVer %s", async (version) => {
+  const { config, files } = fixture(1);
+  files.set("komari", bar("komari", version));
+  const result = await updateDashboards(config);
+  expect(result.failed).toBe(false);
+  expect(result.config.dashboards[0]!.releases.at(-1)!.version).toBe(version);
 });
 
 it("skips identical bytes without appending a release", async () => {

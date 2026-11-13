@@ -1,4 +1,4 @@
-import { compare, valid } from "semver";
+import { compare, parse } from "semver";
 import { z } from "zod";
 
 const id = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -22,9 +22,17 @@ const pin = z.strictObject({ url: httpsURL, sha256: digest });
 const tool = pin.omit({ sha256: true });
 const release = z.strictObject({
   commit: z.string().regex(/^[a-f0-9]{40}$/, "Release must pin a full commit"),
-  version: z
-    .string()
-    .refine((value) => valid(value) === value, { message: "Invalid SemVer", abort: true }),
+  version: z.string().refine(
+    (value) => {
+      const version = parse(value);
+      // semver's normalized version omits build metadata.
+      return (
+        version !== null &&
+        value === `${version.version}${version.build.length ? `+${version.build.join(".")}` : ""}`
+      );
+    },
+    { message: "Invalid SemVer", abort: true },
+  ),
   sha256: digest,
   path: barPath.optional(),
   icon: pin.extend({ contentType: z.string().startsWith("image/") }).optional(),

@@ -1,0 +1,80 @@
+{
+  "skip_content": "Zum Inhalt springen",
+  "main_navigation": "Hauptnavigation",
+  "dashboards": "Dashboards",
+  "site_github_label": "Awesome.Metrix.Bar auf GitHub",
+  "footer_description": "Community-Dashboards für Metrix.Bar.",
+  "registry_json": "Registry-JSON",
+  "registry_guide": "Registry-Anleitung",
+  "language_picker": "Sprache",
+  "hero_eyebrow": "Community-Dashboards",
+  "hero_heading": "Eine Registry für Metrix.Bar-Dashboards.",
+  "hero_description": "Entdecke Community-Dashboards, prüfe ihre Voraussetzungen und installiere sie direkt in der App.",
+  "hero_details": "Jede Dashboard-Seite zeigt Autor, Version und Lizenz sowie Links zum Projekt.",
+  "browse_catalog": "Katalog durchsuchen",
+  "registry_heading": "In Metrix.Bar entdecken",
+  "registry_description": "Füge diese Registry hinzu, um Dashboards zu entdecken und in der App nach Updates zu suchen.",
+  "add_registry": "Registry hinzufügen",
+  "registry_url_label": "Oder füge diese URL unter Einstellungen → Registries ein",
+  "platform_requirements": " für macOS, Windows oder Linux (experimentell) wird benötigt. Bestätige in der App.",
+  "catalog_heading": "Alle Dashboards",
+  "sort_description": "Sortiert nach GitHub-Sternen pro Dashboard desselben Repositorys.",
+  "dashboard_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} Dashboard",
+        "countPlural=other": "{count} Dashboards"
+      }
+    }
+  ],
+  "fallback_description": "Ein Community-Dashboard für Metrix.Bar.",
+  "details": "Details",
+  "view_details": "Details zu {name} ansehen",
+  "view_repository": "{repository} auf GitHub ansehen",
+  "install": "Installieren",
+  "install_named": "{name} in Metrix.Bar installieren",
+  "breadcrumb": "Brotkrümelnavigation",
+  "github_project": "GitHub-Projekt",
+  "install_heading": "Dieses Dashboard installieren",
+  "install_in_app": "In Metrix.Bar installieren",
+  "download_bar": ".bar herunterladen",
+  "install_requirement": "Metrix.Bar wird benötigt. Bestätige die Installation in der App.",
+  "setup_heading": "Einrichtung und Nutzung",
+  "getting_started": "Erste Schritte",
+  "setup_fallback": "Wähle „In Metrix.Bar installieren“ und prüfe dann die Berechtigungen des Dashboards in der App.",
+  "updates_heading": "Aktuell halten",
+  "updates_description": "Installiere über diese Registry, um in Metrix.Bar nach Updates zu suchen. Du entscheidest, wann du sie anwendest.",
+  "verify_download": "Download überprüfen",
+  "verify_description": "Vergleiche den SHA-256-Wert der heruntergeladenen Datei mit dem dieser Version.",
+  "browse_all": "Alle Dashboards durchsuchen",
+  "details_heading": "Dashboard-Details",
+  "author": "Autor",
+  "version": "Version",
+  "dashboard_id": "Dashboard-ID",
+  "category": "Kategorie",
+  "license": "Lizenz",
+  "license_undeclared": "Nicht angegeben",
+  "project_homepage": "Projekt-Website",
+  "source_code": "Quellcode",
+  "stars_unavailable": "{repository}: GitHub-Sterne nicht verfügbar",
+  "stars_count": [
+    {
+      "declarations": [
+        "input repository",
+        "input value",
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{repository}: {value} GitHub-Stern",
+        "countPlural=other": "{repository}: {value} GitHub-Sterne"
+      }
+    }
+  ],
+  "home_title": "{site} — Metrix.Bar-Dashboards",
+  "home_description": "Entdecke Community-Dashboards für Metrix.Bar, prüfe die Voraussetzungen und füge die Registry hinzu, um sie in der App zu installieren und Updates zu erhalten.",
+  "dashboard_fallback_description": "Installiere {name}, ein Community-Dashboard für Metrix.Bar."
+}

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vite-plus/test";
 import { sortedDashboards } from "../src/catalog.ts";
 import manifest from "../.generated/manifest.json";
-import { dashboardHead, dashboardPath, homeHead, siteURL } from "../src/seo.ts";
+import { dashboardPath } from "../src/i18n.ts";
+import { dashboardHead, homeHead, siteURL } from "../src/seo.ts";
 
 function structured(head: ReturnType<typeof homeHead>) {
   return JSON.parse(head.script![0]!.innerHTML!);
@@ -10,7 +11,9 @@ function structured(head: ReturnType<typeof homeHead>) {
 describe("search metadata", () => {
   it("lists all canonical detail URLs in collection structured data", () => {
     const head = homeHead(manifest);
-    expect(head.link).toEqual([{ rel: "canonical", href: "https://awesome.metrix.bar/" }]);
+    expect(head.link?.filter(({ rel }) => rel === "canonical")).toEqual([
+      { rel: "canonical", href: "https://awesome.metrix.bar/" },
+    ]);
     const collection = structured(head)["@graph"][1];
     expect(collection.mainEntity.numberOfItems).toBe(manifest.registry.dashboards.length);
     expect(collection.mainEntity.itemListElement.map((item: { url: string }) => item.url)).toEqual(
@@ -24,7 +27,9 @@ describe("search metadata", () => {
       const head = dashboardHead(dashboard, manifest);
       titles.add(head.title!);
       const url = siteURL(manifest, dashboardPath(dashboard.id));
-      expect(head.link).toEqual([{ rel: "canonical", href: url }]);
+      expect(head.link?.filter(({ rel }) => rel === "canonical")).toEqual([
+        { rel: "canonical", href: url },
+      ]);
       expect(head.meta).toContainEqual({ property: "og:url", content: url });
       const app = structured(head)["@graph"][0];
       expect(app.softwareVersion).toBe(dashboard.version);

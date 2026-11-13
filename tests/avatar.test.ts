@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
@@ -72,6 +72,28 @@ describe("author avatars", () => {
     await buildAvatars(cache, output, upstream, later);
     expect(upstream).toHaveBeenCalledTimes(authors.length * 3);
     expect(new Uint8Array(await readFile(join(output, "baranwang.webp")))).toEqual(refreshed);
+  });
+
+  it.each([0, 86_401_000])("refreshes empty cached avatars after %i ms", async (age) => {
+    const { cache, output } = await temporary();
+    await mkdir(cache, { recursive: true });
+    for (const author of authors) await writeFile(join(cache, author.file), "");
+    const bytes = new Uint8Array([1, 2, 3]);
+    const upstream = vi.fn<typeof fetch>().mockImplementation(async () => new Response(bytes));
+    await buildAvatars(cache, output, upstream, Date.now() + age);
+    expect(upstream).toHaveBeenCalledTimes(authors.length);
+    expect(new Uint8Array(await readFile(join(output, authors[0]!.file)))).toEqual(bytes);
+  });
+
+  it("rejects empty cached avatars when refreshing fails", async () => {
+    const { cache, output } = await temporary();
+    await mkdir(cache, { recursive: true });
+    await writeFile(join(cache, authors[0]!.file), "");
+    const upstream = vi.fn<typeof fetch>().mockRejectedValue(new Error("service unavailable"));
+    await expect(buildAvatars(cache, output, upstream, Date.now() + 86_401_000)).rejects.toThrow(
+      "service unavailable",
+    );
+    await expect(readFile(join(output, authors[0]!.file))).rejects.toThrow();
   });
 
   it("rejects failed and empty downloads", async () => {

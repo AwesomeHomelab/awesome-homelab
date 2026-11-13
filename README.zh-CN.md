@@ -4,6 +4,8 @@
 
 适用于 macOS、Windows 和 Linux（实验性支持）的 [Metrix.Bar](https://metrix.bar/) 社区看板注册表，全部看板见 [awesome.metrix.bar](https://awesome.metrix.bar/)。
 
+使用语言选择器可切换英文、简体中文、繁体中文、日语、韩语、法语、西班牙语、德语和葡萄牙语。看板介绍和配置说明保留上游原文。
+
 ## 安装看板
 
 在网站上点击 **Add registry**，或在 Metrix.Bar 的 **Settings → Registries** 中粘贴：
@@ -46,7 +48,7 @@ vp run verify
 vp run dev
 ```
 
-开发服务器地址为 `http://localhost:5173/`。
+开发服务器地址为 `http://localhost:5173/`。界面翻译位于 `messages/<locale>.json`，Paraglide 会在开发和构建时编译消息。修改翻译后，单独运行检查前可先执行 `vp run messages:build`。
 
 项目 Star 在构建时刷新，本地缓存位于 `.cache/projects/`，有效期为 24 小时。设置 `GH_TOKEN` 可使用 GitHub 认证请求，CI 使用内置令牌。请求失败时沿用缓存；无可用数据时显示 `—` 并排在最后。线上目录随部署更新。
 
