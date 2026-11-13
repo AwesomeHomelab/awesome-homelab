@@ -43,6 +43,11 @@
           "commit": "db998c212451de5d478980088acf3b4f869aa1e2",
           "version": "1.1.0",
           "sha256": "77e9d275bfc752159c3ab4094b852b347cab81dfd8487a2765312ac01bc85f9e"
+        },
+        {
+          "commit": "f2eb93b61a81e3f3f925bb3e7d98559ebf33066f",
+          "version": "1.2.0",
+          "sha256": "db155f221e98ec1f47df8a41847a2b4f422d34455f6330378812178d0e3cb718"
         }
       ]
     },
@@ -99,6 +104,11 @@
           "commit": "64e2c1cceea645a190f98f7e7b3057900284bf97",
           "version": "1.1.0",
           "sha256": "adeefc4930aa2e0ad809437b4b615c67a4273f225cc11aae475797d6eed18556"
+        },
+        {
+          "commit": "ce8910d754912a81095591b54a20a96f8d91dc96",
+          "version": "1.2.0",
+          "sha256": "ee5de13c80f0e0a26f6f72ecb7434b4196af17e5c5923dacdc8a1576af10eb1d"
         }
       ]
     },
@@ -113,6 +123,11 @@
           "commit": "64e2c1cceea645a190f98f7e7b3057900284bf97",
           "version": "1.1.2",
           "sha256": "05122ad285e46ff90f7f3124a70c752d710edf148629c303b1739cea5bedfdd7"
+        },
+        {
+          "commit": "ce8910d754912a81095591b54a20a96f8d91dc96",
+          "version": "1.2.0",
+          "sha256": "1382fef6d5860677e8fa2a83272645fef9edfe97aa79c7c2ec027e5999bd4b63"
         }
       ]
     },
@@ -127,6 +142,11 @@
           "commit": "64e2c1cceea645a190f98f7e7b3057900284bf97",
           "version": "1.1.2",
           "sha256": "6eda244178ae2a36a9ed09951d9b609ace0d0080b57d04a7ee413b71b555e3d5"
+        },
+        {
+          "commit": "ce8910d754912a81095591b54a20a96f8d91dc96",
+          "version": "1.2.0",
+          "sha256": "fa2e6a7efb1d10e644cc8953c2665556b3dae1df39165edc2c1857909538991d"
         }
       ]
     },
