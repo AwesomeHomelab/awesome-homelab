@@ -19,10 +19,19 @@
   letter-spacing: -0.035em;
 }
 .site-header nav {
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
 }
 .site-header nav ul {
   flex-wrap: wrap;
+}
+.site-header nav > ul:last-child {
+  gap: 0.25rem;
+}
+.site-header .repository-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 main.container {
   padding-top: 3rem;
@@ -94,10 +103,10 @@ main.container {
   }
   .site-header nav {
     align-items: flex-start;
+    flex-direction: column;
   }
   .site-header nav > ul:last-child {
-    justify-content: flex-end;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
   }
   .site-footer {
     flex-direction: column;

@@ -68,6 +68,15 @@ export function DashboardCard({
         <a href={dashboardPath(dashboard.id)} aria-label={`View ${dashboard.name} details`}>
           Details <span aria-hidden="true">→</span>
         </a>
+        {repository && (
+          <a
+            className="project-link"
+            href={`https://github.com/${repository}`}
+            aria-label={`View ${repository} on GitHub`}
+          >
+            GitHub <span aria-hidden="true">↗</span>
+          </a>
+        )}
         <a
           role="button"
           className="outline"

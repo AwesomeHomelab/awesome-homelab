@@ -12,27 +12,47 @@
 }
 .detail-heading {
   align-items: flex-start;
-  margin-bottom: 3rem;
-  max-width: 52rem;
+  margin: 0;
 }
 .detail-heading .dashboard-icon {
   width: 4rem;
   height: 4rem;
 }
 .detail-heading h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2rem, 1.25rem + 2vw, 3rem);
   letter-spacing: -0.04em;
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.75rem;
   overflow-wrap: anywhere;
 }
 .detail-heading .eyebrow {
   margin-bottom: 0.5rem;
 }
+.detail-heading .lead {
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+}
+.detail-heading .project-link {
+  display: inline-block;
+  margin-block-start: 1rem;
+  border: 1px solid var(--pico-primary);
+  border-radius: var(--pico-border-radius);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.detail-heading .project-link:hover {
+  background: var(--pico-primary);
+  color: var(--pico-primary-inverse);
+}
 .detail-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
   align-items: start;
-  gap: 4rem;
+  gap: 2.5rem 3rem;
+}
+.detail-grid > * {
+  min-inline-size: 0;
 }
 .detail-grid h2 {
   font-size: 1.25rem;
@@ -51,6 +71,9 @@
   white-space: normal;
   font-size: 0.8rem;
 }
+.install-panel {
+  margin: 0;
+}
 .install-panel > a[role="button"] {
   display: block;
   margin-bottom: 0.75rem;
@@ -60,16 +83,19 @@
   color: var(--pico-muted-color);
   font-size: 0.8rem;
 }
-.install-panel dl {
-  margin-top: 1.5rem;
+.dashboard-information dl {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.875rem 1rem;
   font-size: 0.875rem;
 }
-.install-panel dt {
+.dashboard-information dt {
   color: var(--pico-muted-color);
   font-weight: 400;
 }
-.install-panel dd {
-  margin: 0.25rem 0 1rem;
+.dashboard-information dd {
+  margin: 0;
   overflow-wrap: anywhere;
 }
 .source-links {
@@ -77,16 +103,21 @@
   flex-direction: column;
   gap: 0.75rem;
   font-size: 0.875rem;
+  border-top: 1px solid var(--pico-muted-border-color);
+  padding-block-start: 1rem;
 }
 .back-link {
   margin-top: 3rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 55rem) {
   .detail-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 2rem;
   }
   .detail-heading {
-    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .detail-heading > div {
+    flex: 1 1 16rem;
   }
 }
