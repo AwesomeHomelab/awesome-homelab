@@ -1,4 +1,5 @@
 import type { HeadDescriptor } from "void";
+import { sortedDashboards } from "./catalog.ts";
 import type { Dashboard, Manifest } from "./registry.ts";
 
 export const HOME_DESCRIPTION =
@@ -60,7 +61,7 @@ export function homeHead(manifest: Manifest): HeadDescriptor {
         mainEntity: {
           "@type": "ItemList",
           numberOfItems: manifest.registry.dashboards.length,
-          itemListElement: manifest.registry.dashboards.map((dashboard, index) => ({
+          itemListElement: sortedDashboards(manifest).map((dashboard, index) => ({
             "@type": "ListItem",
             position: index + 1,
             name: dashboard.name,

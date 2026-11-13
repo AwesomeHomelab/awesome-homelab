@@ -57,6 +57,20 @@
   height: 100%;
   margin: 0;
 }
+.dashboard-card-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 1rem;
+}
+.dashboard-card-header .dashboard-heading {
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.dashboard-card-header .dashboard-heading > div {
+  flex: 1 1 8rem;
+  overflow-wrap: anywhere;
+}
 .dashboard-heading h3 {
   font-size: 1.125rem;
   margin: 0 0 0.25rem;

@@ -1,4 +1,5 @@
 import { createElement } from "react";
+import { load } from "cheerio";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
 import generated from "../.generated/manifest.json";
@@ -30,6 +31,28 @@ describe("catalog and dashboard pages", () => {
     }
     expect(body).toContain(`href="${registryLink(manifest.registryURL)}"`);
   });
+
+  it.each([1234, 0, null, Number.MAX_SAFE_INTEGER])(
+    "renders a local SVG badge with original project stars: %s",
+    (stars) => {
+      const custom = structuredClone(manifest);
+      const dashboard = custom.registry.dashboards.find(({ id }) => id === "magpie")!;
+      const repository = "thedavidweng/metrix-bar";
+      custom.projectStars[repository] = stars;
+      const page = load(renderCard(dashboard, custom));
+      const badge = page(".project-stars");
+      const value = stars?.toLocaleString("en-US") ?? "—";
+      expect(badge.attr("href")).toBe(`https://github.com/${repository}`);
+      expect(badge.attr("aria-label")).toBe(
+        stars === null
+          ? `${repository}: GitHub stars unavailable`
+          : `${repository}: ${value} GitHub stars`,
+      );
+      expect(badge.find("svg[aria-hidden=true]")).toHaveLength(1);
+      expect(badge.find("text").text()).toBe(value);
+      expect(badge.find("img")).toHaveLength(0);
+    },
+  );
 
   it("escapes upstream names, descriptions, setup text and attributes", () => {
     const custom = structuredClone(manifest);

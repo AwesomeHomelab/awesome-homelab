@@ -3,6 +3,7 @@ import { load } from "cheerio";
 import type { CheerioAPI } from "cheerio";
 import type { HeadDescriptor } from "void";
 import { avatarPath } from "../src/authors.ts";
+import { sortedDashboards } from "../src/catalog.ts";
 import { installLink, registryLink } from "../src/metrix.ts";
 import { PAGE_CACHE } from "../src/registry.ts";
 import type { Manifest } from "../src/registry.ts";
@@ -42,11 +43,31 @@ export async function verifyPages(
     home(`a[href="${registryLink(manifest.registryURL)}"]`).length,
     "Missing add-registry action",
   );
+  const cards = home(".dashboard-card");
+  assert.deepEqual(
+    cards.toArray().map((card) => home(card).find("h3 a").attr("href")),
+    sortedDashboards(manifest).map(({ id }) => dashboardPath(id)),
+    "Catalog cards must follow weighted project stars",
+  );
   for (const dashboard of manifest.registry.dashboards) {
     const path = dashboardPath(dashboard.id);
     const install = `a[href="${installLink(dashboard.id, manifest.registryURL)}"]`;
     assert(home(`a[href="${path}"]`).length, `${dashboard.id}: missing detail link`);
     assert(home(install).length, `${dashboard.id}: missing catalog install link`);
+    const card = cards.filter((_, element) => home(element).find("h3 a").attr("href") === path);
+    const repository = manifest.dashboardRepositories[dashboard.id];
+    const badge = card.find(".project-stars");
+    assert.equal(
+      badge.attr("href"),
+      `https://github.com/${repository}`,
+      `${dashboard.id}: wrong star repository`,
+    );
+    assert.equal(
+      badge.find("text").text(),
+      manifest.projectStars[repository]?.toLocaleString("en-US") ?? "—",
+      `${dashboard.id}: wrong project star count`,
+    );
+    assert.equal(badge.find("svg").length, 1, `${dashboard.id}: missing SVG badge`);
     const page = await verifyPage(
       path,
       dashboardHead(dashboard, manifest),

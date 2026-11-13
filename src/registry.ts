@@ -39,4 +39,6 @@ export interface Manifest {
   registry: Registry;
   indexETag: string;
   assets: Record<string, Asset>;
+  dashboardRepositories: Record<string, string>;
+  projectStars: Record<string, number | null>;
 }

@@ -1,4 +1,5 @@
 import { registryLink } from "../metrix.ts";
+import { sortedDashboards } from "../catalog.ts";
 import type { Manifest } from "../registry.ts";
 import { DashboardCard } from "./dashboard.tsx";
 import { Site } from "./site.tsx";
@@ -40,12 +41,12 @@ export function Home({ manifest }: { manifest: Manifest }) {
         <header className="section-heading">
           <div>
             <h2 id="dashboards">All dashboards</h2>
-            <p>Setup instructions and requirements are on each dashboard page.</p>
+            <p>Ranked by GitHub stars per dashboard from the same repository.</p>
           </div>
           <small>{manifest.registry.dashboards.length} dashboards</small>
         </header>
         <div className="dashboard-grid">
-          {manifest.registry.dashboards.map((dashboard) => (
+          {sortedDashboards(manifest).map((dashboard) => (
             <DashboardCard key={dashboard.id} dashboard={dashboard} manifest={manifest} />
           ))}
         </div>

@@ -3,7 +3,7 @@ import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
-import { describe, expect, it } from "vite-plus/test";
+import { describe, expect, it, vi } from "vite-plus/test";
 import sources from "../registry/sources.json";
 import generated from "../.generated/manifest.json";
 import { completeEntry, sha256, validateRegistry } from "../scripts/registry.ts";
@@ -11,6 +11,11 @@ import { download } from "../scripts/download.ts";
 import { buildRegistry } from "../scripts/build-registry.ts";
 import type { Source } from "../scripts/config.ts";
 import type { Manifest, Registry } from "../src/registry.ts";
+
+vi.mock("../scripts/build-stars.ts", () => ({
+  buildStars: async (repositories: string[]) =>
+    Object.fromEntries(repositories.map((repository) => [repository, 120])),
+}));
 
 const manifest: Manifest = generated;
 
@@ -102,6 +107,9 @@ describe("registry generation", () => {
       ]);
       expect(JSON.parse(await readFile(join(output, "manifest.json"), "utf8"))).toEqual(result);
       expect(result.registry.dashboards).toHaveLength(1);
+      expect(result.dashboardRepositories).toEqual({ "sample-history": "author/history" });
+      expect(result.projectStars).toEqual({ "author/history": 120 });
+      expect(result.registry).not.toHaveProperty("projectStars");
       expect(result.registry.dashboards[0]!.version).toBe("1.1.0");
       expect(Object.keys(result.assets)).toHaveLength(3);
       expect(result.registry.dashboards[0]!.icon).toBe(

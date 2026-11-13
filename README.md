@@ -30,7 +30,7 @@ Then open a dashboard's page, follow its setup notes, and choose **Install**. Yo
 | [`magpie`](https://awesome.metrix.bar/dashboards/magpie)                   | Agent models and allowances       |
 | [`nezha`](https://awesome.metrix.bar/dashboards/nezha)                     | Nezha V2 monitoring               |
 
-Each dashboard page lists its author, version, license, and setup notes.
+Each dashboard page lists its author, version, license, and setup notes. Catalog order uses each repository’s GitHub stars divided by its number of listed dashboards. Badges show total stars and link to the repository.
 
 ## Contribute
 
@@ -47,6 +47,8 @@ vp run dev
 ```
 
 The development server runs at `http://localhost:5173/`.
+
+Project stars refresh during builds with a 24-hour local cache in `.cache/projects/`. Set `GH_TOKEN` for authenticated GitHub requests; CI uses its built-in token. Failed requests keep cached counts; unavailable counts show `—` and sort last. The live catalog updates on deployment.
 
 ## Deployment
 

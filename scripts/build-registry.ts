@@ -8,6 +8,7 @@ import { completeEntry, sha256, sourceURL, validateRegistry } from "./registry.t
 import { validateSources } from "./config.ts";
 import { cacheDir, download } from "./download.ts";
 import { writeAtomic } from "./files.ts";
+import { buildStars } from "./build-stars.ts";
 
 const exec = promisify(execFile);
 const root = resolve(import.meta.dirname, "..");
@@ -107,6 +108,10 @@ export async function buildRegistry(
     registry,
     indexETag: `"${sha256(index)}"`,
     assets: Object.fromEntries(Object.entries(resources).sort(([a], [b]) => a.localeCompare(b))),
+    dashboardRepositories: Object.fromEntries(
+      config.dashboards.map(({ id, repository }) => [id, repository]),
+    ),
+    projectStars: await buildStars(config.dashboards.map(({ repository }) => repository)),
   };
   await writeAtomic(join(generated, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
   return manifest;

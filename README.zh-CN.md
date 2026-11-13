@@ -30,7 +30,7 @@ https://awesome.metrix.bar/dashboards/index.json
 | [`magpie`](https://awesome.metrix.bar/dashboards/magpie)                   | Agent 模型与额度        |
 | [`nezha`](https://awesome.metrix.bar/dashboards/nezha)                     | 哪吒 V2 监控            |
 
-每个看板页面还列出作者、版本、许可证和配置说明。
+每个看板页面还列出作者、版本、许可证和配置说明。目录按仓库 Star 数除以本站收录的看板数降序排列。徽章显示 Star 总数，并链接到仓库。
 
 ## 贡献
 
@@ -47,6 +47,8 @@ vp run dev
 ```
 
 开发服务器地址为 `http://localhost:5173/`。
+
+项目 Star 在构建时刷新，本地缓存位于 `.cache/projects/`，有效期为 24 小时。设置 `GH_TOKEN` 可使用 GitHub 认证请求，CI 使用内置令牌。请求失败时沿用缓存；无可用数据时显示 `—` 并排在最后。线上目录随部署更新。
 
 ## 部署
 

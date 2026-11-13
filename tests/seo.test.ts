@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
+import { sortedDashboards } from "../src/catalog.ts";
 import manifest from "../.generated/manifest.json";
 import { dashboardHead, dashboardPath, homeHead, siteURL } from "../src/seo.ts";
 
@@ -13,7 +14,7 @@ describe("search metadata", () => {
     const collection = structured(head)["@graph"][1];
     expect(collection.mainEntity.numberOfItems).toBe(manifest.registry.dashboards.length);
     expect(collection.mainEntity.itemListElement.map((item: { url: string }) => item.url)).toEqual(
-      manifest.registry.dashboards.map(({ id }) => siteURL(manifest, dashboardPath(id))),
+      sortedDashboards(manifest).map(({ id }) => siteURL(manifest, dashboardPath(id))),
     );
   });
 

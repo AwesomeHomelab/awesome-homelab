@@ -2,6 +2,7 @@ import { installLink } from "../metrix.ts";
 import { dashboardPath } from "../seo.ts";
 import type { Dashboard, Manifest } from "../registry.ts";
 import { Author } from "./author.tsx";
+import { ProjectStars } from "./project-stars.tsx";
 
 function imageIcon(icon: string | undefined, manifest: Manifest): string | undefined {
   if (!icon) return;
@@ -35,23 +36,29 @@ export function DashboardCard({
   dashboard: Dashboard;
   manifest: Manifest;
 }) {
+  const repository = manifest.dashboardRepositories[dashboard.id];
   return (
     <article className="dashboard-card">
-      <div className="dashboard-heading">
-        <DashboardIcon dashboard={dashboard} manifest={manifest} />
-        <div>
-          <h3>
-            <a href={dashboardPath(dashboard.id)}>{dashboard.name}</a>
-          </h3>
-          <p className="byline">
-            {dashboard.author && (
-              <>
-                <Author name={dashboard.author} /> <span>·</span>{" "}
-              </>
-            )}
-            <span>v{dashboard.version}</span>
-          </p>
+      <div className="dashboard-card-header">
+        <div className="dashboard-heading">
+          <DashboardIcon dashboard={dashboard} manifest={manifest} />
+          <div>
+            <h3>
+              <a href={dashboardPath(dashboard.id)}>{dashboard.name}</a>
+            </h3>
+            <p className="byline">
+              {dashboard.author && (
+                <>
+                  <Author name={dashboard.author} /> <span>·</span>{" "}
+                </>
+              )}
+              <span>v{dashboard.version}</span>
+            </p>
+          </div>
         </div>
+        {repository && (
+          <ProjectStars repository={repository} stars={manifest.projectStars[repository] ?? null} />
+        )}
       </div>
       <p className="card-description">
         {dashboard.description ?? "A community dashboard for Metrix.Bar."}

@@ -1,4 +1,5 @@
 import registry from "../src/registry-handler.ts";
+import { sortedDashboards } from "../src/catalog.ts";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { createHandler } from "../src/handler.ts";
 import type { Manifest } from "../src/registry.ts";
@@ -16,6 +17,8 @@ const manifest: Manifest = {
     dashboards: [],
   },
   indexETag: '"index-digest"',
+  dashboardRepositories: {},
+  projectStars: {},
   assets: {
     [path]: {
       url: `https://raw.githubusercontent.com/author/repo/${"a".repeat(40)}/sample.bar`,
@@ -45,6 +48,34 @@ describe("registry HTTP behavior in Workers", () => {
     expect(index.dashboards.length).toBeGreaterThanOrEqual(8);
     expect(response.headers.get("Cache-Control")).toBe("public, max-age=60, s-maxage=300");
     expect(response.headers.get("ETag")).toMatch(/^"[a-f0-9]{64}"$/);
+  });
+
+  it("keeps index bytes, ETag and conditional requests unchanged when stars reorder the catalog", async () => {
+    const custom = structuredClone(manifest);
+    custom.registry.dashboards = ["first", "second"].map((id) => ({
+      id,
+      name: id,
+      file: `files/${id}.bar`,
+      protocol_version: "0",
+      version: "1.0.0",
+      sha256: hash,
+    }));
+    custom.dashboardRepositories = { first: "owner/first", second: "owner/second" };
+    custom.projectStars = { "owner/first": 2, "owner/second": 1 };
+    const order = sortedDashboards(custom).map(({ id }) => id);
+    const before = await createHandler(custom)(request("/dashboards/index.json"));
+    custom.projectStars["owner/second"] = 3;
+    expect(sortedDashboards(custom).map(({ id }) => id)).not.toEqual(order);
+    const handler = createHandler(custom);
+    const after = await handler(request("/dashboards/index.json"));
+    expect(await after.text()).toBe(await before.text());
+    expect(after.headers.get("ETag")).toBe(before.headers.get("ETag"));
+    const conditional = await handler(
+      request("/dashboards/index.json", {
+        headers: { "If-None-Match": before.headers.get("ETag")! },
+      }),
+    );
+    expect(conditional.status).toBe(304);
   });
 
   it("returns exact upstream bytes with immutable caching and a pinned URL", async () => {

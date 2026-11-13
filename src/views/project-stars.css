@@ -1,0 +1,26 @@
+.project-stars {
+  display: inline-flex;
+  border-radius: 0.25rem;
+}
+.project-stars svg {
+  display: block;
+  font-size: 11px;
+}
+.project-stars rect {
+  fill: var(--pico-card-sectioning-background-color);
+  stroke: var(--pico-muted-border-color);
+}
+.project-stars path {
+  fill: var(--pico-primary);
+}
+.project-stars text {
+  fill: var(--pico-contrast);
+  font-family: ui-monospace, monospace;
+}
+.project-stars:focus-visible {
+  outline: 2px solid var(--pico-primary);
+  outline-offset: 3px;
+}
+.project-stars:hover rect {
+  stroke: var(--pico-primary);
+}
