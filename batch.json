@@ -1,1 +1,1 @@
-{"format":1,"seq":122,"writes":[{"type":"task","value":{"id":56,"conversationId":1,"kind":"pi.generation","version":2,"input":{},"background":false,"abortRequested":false,"state":{"status":"running","checkpoint":{"phase":"request","attempt":1,"model":{"provider":"opencode-go","modelId":"deepseek-v4.1-flash"},"thinkingLevel":"off","streamOptions":{},"cutoff":55}},"startedAt":1794617063883}}]}
+{"format":1,"seq":123,"writes":[{"type":"document.change","id":2,"content":{"version":3,"kind":"delta","ops":[["s",["generation"],{"attempt":1}]]}}]}
