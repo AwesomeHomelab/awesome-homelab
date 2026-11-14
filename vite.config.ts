@@ -2,13 +2,14 @@ import { voidPlugin } from "void";
 import { voidReact } from "@void/react/plugin";
 import { cloudflareTest } from "@cloudflare/vitest-plugin";
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
+import pandacss from "@pandacss/vite";
 import { defineConfig } from "vite-plus";
 import voidConfig from "./void.config.ts";
 
 export default defineConfig({
   plugins: process.env.VITEST
     ? []
-    : [paraglideVitePlugin({ project: "./project.inlang" }), voidPlugin(), voidReact()],
+    : [pandacss(), paraglideVitePlugin({ project: "./project.inlang" }), voidPlugin(), voidReact()],
   environments: {
     void_worker: {
       build: { sourcemap: true },
