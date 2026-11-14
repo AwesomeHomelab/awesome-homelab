@@ -52,6 +52,20 @@
       ]
     },
     {
+      "id": "tungshing",
+      "repository": "baranwang/metrix-bar",
+      "path": "tungshing/tungshing.bar",
+      "author": "baranwang",
+      "license": "UNLICENSED",
+      "releases": [
+        {
+          "commit": "0ef89e96278f0f977ba091228cd52635ac889ea8",
+          "version": "1.0.0",
+          "sha256": "d143b12970c3df03b1e71f123cf64f7cc0c06879464aa0cd22d14c71840d5fd9"
+        }
+      ]
+    },
+    {
       "id": "pulse",
       "repository": "fatwang2/Pulse",
       "path": "metrix/pulse.bar",

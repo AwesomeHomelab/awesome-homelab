@@ -22,6 +22,7 @@ https://awesome.metrix.bar/dashboards/index.json
 | -------------------------------------------------------------------------- | ----------------------- |
 | [`komari`](https://awesome.metrix.bar/dashboards/komari)                   | 服务器监控              |
 | [`tokens`](https://awesome.metrix.bar/dashboards/tokens)                   | AI 编程用量             |
+| [`tungshing`](https://awesome.metrix.bar/dashboards/tungshing)             | 农历黄历                |
 | [`pulse`](https://awesome.metrix.bar/dashboards/pulse)                     | 股票与加密货币          |
 | [`codex-resets`](https://awesome.metrix.bar/dashboards/codex-resets)       | Codex 额度重置（中文）  |
 | [`codex-resets-en`](https://awesome.metrix.bar/dashboards/codex-resets-en) | Codex 额度重置（英文）  |
