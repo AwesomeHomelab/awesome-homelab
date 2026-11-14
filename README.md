@@ -22,6 +22,7 @@ Then open a dashboard's page, follow its setup notes, and choose **Install**. Yo
 | -------------------------------------------------------------------------- | --------------------------------- |
 | [`komari`](https://awesome.metrix.bar/dashboards/komari)                   | Server monitoring                 |
 | [`tokens`](https://awesome.metrix.bar/dashboards/tokens)                   | AI coding usage                   |
+| [`tungshing`](https://awesome.metrix.bar/dashboards/tungshing)             | Chinese lunar almanac             |
 | [`pulse`](https://awesome.metrix.bar/dashboards/pulse)                     | Stocks and cryptocurrency         |
 | [`codex-resets`](https://awesome.metrix.bar/dashboards/codex-resets)       | Codex quota resets (Chinese)      |
 | [`codex-resets-en`](https://awesome.metrix.bar/dashboards/codex-resets-en) | Codex quota resets (English)      |

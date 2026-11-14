@@ -29,7 +29,7 @@
 
 ## Dashboard sources
 
-- [baranwang/metrix-bar](https://github.com/baranwang/metrix-bar): the root `index.json` contains Komari and Tokens. Include each dashboard only once.
+- [baranwang/metrix-bar](https://github.com/baranwang/metrix-bar): the root `index.json` contains Komari, Tokens and Tungshing. Include each dashboard only once. Komari and Tokens declare AGPL-3.0-only inside the `.bar`; Tungshing declares no license, so it is recorded as `UNLICENSED`.
 - [Pulse](https://github.com/fatwang2/Pulse/blob/main/metrix/README.md): resolve `metrix/index.json` and `metrix/pulse.bar` from the `metrix/` directory, not the repository root.
 - [Codex Resets](https://github.com/0tt0/codex-resets-bar): include both `codex-resets.bar` and `codex-resets-en.bar` using their actual metadata.
 - [JasonChou0v0/metrix-bar-dashboards](https://github.com/JasonChou0v0/metrix-bar-dashboards): files are under `dashboards/`. No upstream license is declared; record `UNLICENSED`. Local Ports requires the upstream macOS collector described in its README; do not execute it during registry generation.
