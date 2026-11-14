@@ -74,7 +74,7 @@
       }
     }
   ],
-  "home_title": "{site} — Metrix.Bar dashboards",
-  "home_description": "Browse community dashboards for Metrix.Bar, check setup requirements, and add the registry to install them and get updates in the app.",
+  "home_title": "Metrix.Bar dashboards | {site}",
+  "home_description": "Explore community dashboards for Metrix.Bar, review setup instructions and author details, then add the registry to install dashboards and get updates in the app.",
   "dashboard_fallback_description": "Install {name}, a community dashboard for Metrix.Bar."
 }

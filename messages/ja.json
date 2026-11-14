@@ -51,7 +51,7 @@
   "source_code": "ソースコード",
   "stars_unavailable": "{repository}：GitHub スター数を取得できません",
   "stars_count": "{repository}：GitHub スター {value} 個",
-  "home_title": "{site} — Metrix.Bar ダッシュボード",
+  "home_title": "Metrix.Bar ダッシュボード | {site}",
   "home_description": "Metrix.Bar のコミュニティダッシュボードを探し、必要な設定を確認できます。レジストリを追加して、アプリでインストールや更新を行えます。",
   "dashboard_fallback_description": "Metrix.Bar のコミュニティダッシュボード {name} をインストール。"
 }

@@ -21,17 +21,42 @@ export async function verifyPages(
   assert.equal(sitemap.status, 200, "Sitemap failed");
   assert.match(sitemap.headers.get("Content-Type") ?? "", /^application\/xml/);
   const xml = load(await sitemap.text(), { xml: true });
+  assert.equal(xml("urlset").attr("xmlns:xhtml"), "http://www.w3.org/1999/xhtml");
+  const paths = ["/", ...manifest.registry.dashboards.map(({ id }) => dashboardPath(id))];
+  const pages = locales.flatMap((locale) =>
+    paths.map((path) => ({ path, url: siteURL(manifest, localePath(path, locale)) })),
+  );
   const locations = xml("loc")
     .toArray()
     .map((node) => xml(node).text());
   assert.deepEqual(
     locations,
-    locales.flatMap((locale) => [
-      siteURL(manifest, localePath("/", locale)),
-      ...manifest.registry.dashboards.map(({ id }) => siteURL(manifest, dashboardPath(id, locale))),
-    ]),
+    pages.map(({ url }) => url),
     "Sitemap must contain exactly the public pages",
   );
+  for (const [index, node] of xml("url").toArray().entries()) {
+    const { path, url } = pages[index]!;
+    const alternates = xml(node)
+      .children("xhtml\\:link")
+      .toArray()
+      .map((link) => ({
+        rel: xml(link).attr("rel"),
+        hreflang: xml(link).attr("hreflang"),
+        href: xml(link).attr("href"),
+      }));
+    assert.deepEqual(
+      alternates,
+      [
+        ...locales.map((locale) => ({
+          rel: "alternate",
+          hreflang: locale,
+          href: siteURL(manifest, localePath(path, locale)),
+        })),
+        { rel: "alternate", hreflang: "x-default", href: siteURL(manifest, path) },
+      ],
+      `${url}: sitemap must link every language variant, including itself and x-default`,
+    );
+  }
   const robots = await get(new URL("/robots.txt", origin));
   assert.equal(robots.status, 200, "robots.txt failed");
   assert(

@@ -74,7 +74,7 @@
       }
     }
   ],
-  "home_title": "{site} — Painéis do Metrix.Bar",
+  "home_title": "Painéis do Metrix.Bar | {site}",
   "home_description": "Explore painéis da comunidade para o Metrix.Bar, confira os requisitos e adicione o registro para instalá-los e receber atualizações no aplicativo.",
   "dashboard_fallback_description": "Instale {name}, um painel da comunidade para o Metrix.Bar."
 }

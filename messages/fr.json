@@ -74,7 +74,7 @@
       }
     }
   ],
-  "home_title": "{site} — Tableaux de bord Metrix.Bar",
+  "home_title": "Tableaux de bord Metrix.Bar | {site}",
   "home_description": "Parcourez les tableaux de bord communautaires pour Metrix.Bar, vérifiez les prérequis et ajoutez le registre pour les installer et recevoir les mises à jour dans l’application.",
   "dashboard_fallback_description": "Installez {name}, un tableau de bord communautaire pour Metrix.Bar."
 }

@@ -51,7 +51,7 @@
   "source_code": "源代码",
   "stars_unavailable": "{repository}：GitHub Star 数暂不可用",
   "stars_count": "{repository}：{value} 个 GitHub Star",
-  "home_title": "{site} — Metrix.Bar 看板",
+  "home_title": "Metrix.Bar 看板 | {site}",
   "home_description": "浏览 Metrix.Bar 社区看板，了解配置要求，添加注册表后即可在应用中安装看板并获取更新。",
   "dashboard_fallback_description": "安装 Metrix.Bar 社区看板 {name}。"
 }

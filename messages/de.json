@@ -74,7 +74,7 @@
       }
     }
   ],
-  "home_title": "{site} — Metrix.Bar-Dashboards",
+  "home_title": "Metrix.Bar-Dashboards | {site}",
   "home_description": "Entdecke Community-Dashboards für Metrix.Bar, prüfe die Voraussetzungen und füge die Registry hinzu, um sie in der App zu installieren und Updates zu erhalten.",
   "dashboard_fallback_description": "Installiere {name}, ein Community-Dashboard für Metrix.Bar."
 }

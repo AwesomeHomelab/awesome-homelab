@@ -8,6 +8,38 @@ export function siteURL(manifest: Manifest, path = "/"): string {
   return new URL(path, manifest.registryURL).href;
 }
 
+function websiteData(manifest: Manifest) {
+  return {
+    "@type": "WebSite",
+    "@id": `${siteURL(manifest)}#website`,
+    name: manifest.registry.name,
+    url: siteURL(manifest),
+    inLanguage: [...locales],
+  };
+}
+
+export function languageAlternates(manifest: Manifest, path: string) {
+  return [
+    ...locales.map((language) => ({
+      hreflang: language,
+      href: siteURL(manifest, localePath(path, language)),
+    })),
+    { hreflang: "x-default", href: siteURL(manifest, path) },
+  ];
+}
+
+const socialLocales: Record<Locale, string> = {
+  en: "en_US",
+  "zh-CN": "zh_CN",
+  "zh-TW": "zh_TW",
+  ja: "ja_JP",
+  ko: "ko_KR",
+  fr: "fr_FR",
+  es: "es_ES",
+  de: "de_DE",
+  pt: "pt_PT",
+};
+
 function metadata(
   manifest: Manifest,
   path: string,
@@ -27,18 +59,17 @@ function metadata(
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:url", content: url },
+      { property: "og:locale", content: socialLocales[locale] },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
     ],
     link: [
       { rel: "canonical", href: url },
-      ...locales.map((language) => ({
+      ...languageAlternates(manifest, path).map((alternate) => ({
         rel: "alternate",
-        hreflang: language,
-        href: siteURL(manifest, localePath(path, language)),
+        ...alternate,
       })),
-      { rel: "alternate", hreflang: "x-default", href: siteURL(manifest, path) },
     ],
     script: [
       {
@@ -62,13 +93,7 @@ export function homeHead(manifest: Manifest, locale: Locale = baseLocale): HeadD
     {
       "@context": "https://schema.org",
       "@graph": [
-        {
-          "@type": "WebSite",
-          "@id": website,
-          name: manifest.registry.name,
-          url: siteURL(manifest),
-          inLanguage: [...locales],
-        },
+        websiteData(manifest),
         {
           "@type": "CollectionPage",
           "@id": url,
@@ -101,6 +126,8 @@ export function dashboardHead(
 ): HeadDescriptor {
   const path = dashboardPath(dashboard.id);
   const url = siteURL(manifest, dashboardPath(dashboard.id, locale));
+  const application = `${siteURL(manifest, path)}#dashboard`;
+  const breadcrumb = `${url}#breadcrumb`;
   const duplicateName = manifest.registry.dashboards.some(
     (entry) => entry.id !== dashboard.id && entry.name === dashboard.name,
   );
@@ -118,18 +145,31 @@ export function dashboardHead(
       "@graph": [
         {
           "@type": "SoftwareApplication",
-          "@id": url,
+          "@id": application,
           url,
+          mainEntityOfPage: { "@id": url },
           name: dashboard.name,
           description,
           softwareVersion: dashboard.version,
           softwareRequirements: "Metrix.Bar",
           applicationCategory: dashboard.category,
           downloadUrl: new URL(dashboard.file, manifest.registryURL).href,
-          author: dashboard.author ? { "@type": "Person", name: dashboard.author } : undefined,
+          author: dashboard.author
+            ? {
+                "@type": "Person",
+                name: dashboard.author,
+                url: `https://github.com/${encodeURIComponent(dashboard.author)}`,
+              }
+            : undefined,
+          isBasedOn: dashboard.source,
+          license:
+            dashboard.license && dashboard.license !== "UNLICENSED"
+              ? `https://spdx.org/licenses/${encodeURIComponent(dashboard.license)}.html`
+              : undefined,
         },
         {
           "@type": "BreadcrumbList",
+          "@id": breadcrumb,
           itemListElement: [
             {
               "@type": "ListItem",
@@ -140,6 +180,18 @@ export function dashboardHead(
             { "@type": "ListItem", position: 2, name: dashboard.name, item: url },
           ],
         },
+        {
+          "@type": "WebPage",
+          "@id": url,
+          url,
+          name: title,
+          description,
+          inLanguage: locale,
+          isPartOf: { "@id": `${siteURL(manifest)}#website` },
+          mainEntity: { "@id": application },
+          breadcrumb: { "@id": breadcrumb },
+        },
+        websiteData(manifest),
       ],
     },
     locale,

@@ -1,5 +1,6 @@
 node_modules/
 .agents/skills/
+.claude/skills/
 skills-lock.json
 .cache/
 .generated/

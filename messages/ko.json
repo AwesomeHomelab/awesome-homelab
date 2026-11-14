@@ -51,7 +51,7 @@
   "source_code": "소스 코드",
   "stars_unavailable": "{repository}: GitHub 스타 수를 가져올 수 없음",
   "stars_count": "{repository}: GitHub 스타 {value}개",
-  "home_title": "{site} — Metrix.Bar 대시보드",
+  "home_title": "Metrix.Bar 대시보드 | {site}",
   "home_description": "Metrix.Bar 커뮤니티 대시보드를 둘러보고 설정 요구 사항을 확인하세요. 레지스트리를 추가하면 앱에서 설치하고 업데이트를 받을 수 있습니다.",
   "dashboard_fallback_description": "Metrix.Bar 커뮤니티 대시보드 {name}을(를) 설치하세요."
 }
