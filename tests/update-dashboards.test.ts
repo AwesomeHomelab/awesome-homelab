@@ -15,8 +15,11 @@ const icon = "https://example.com/icon.svg";
 const bar = (id: string, version: string, attributes = "") =>
   `<bar protocol-version="0" id="${id}" title="Sample" version="${version}" ${attributes}>\r\n<script>throw new Error("must not execute");</script></bar>\r\n`;
 
-function fixture(count = 2) {
-  const config = validateSources({ ...sources, dashboards: sources.dashboards.slice(0, count) });
+function fixture(ids = ["komari", "tokens"]) {
+  const config = validateSources({
+    ...sources,
+    dashboards: ids.map((id) => sources.dashboards.find((source) => source.id === id)),
+  });
   const files = new Map(config.dashboards.map(({ id }) => [id, bar(id, "9.0.0")]));
   const responses = new Map<string, Response>();
   const iconBytes = Buffer.from(`<svg><!--${randomUUID()}--></svg>`);
@@ -75,7 +78,7 @@ it("appends actual releases while preserving history and sharing a repository sn
 });
 
 it("tracks the current source path while retaining historical path overrides", async () => {
-  const { config, fetch } = fixture(1);
+  const { config, fetch } = fixture(["komari"]);
   const source = config.dashboards[0]!;
   source.path = "dashboards/renamed.bar";
   source.releases[0]!.path = "legacy.bar";
@@ -88,7 +91,7 @@ it("tracks the current source path while retaining historical path overrides", a
 });
 
 it.each(["9.0.0+build.4", "9.0.0-beta.1+build.4"])("publishes SemVer %s", async (version) => {
-  const { config, files } = fixture(1);
+  const { config, files } = fixture(["komari"]);
   files.set("komari", bar("komari", version));
   const result = await updateDashboards(config);
   expect(result.failed).toBe(false);
@@ -136,26 +139,34 @@ it.each([
   ).toHaveLength(1);
 });
 
-it("continues with other repositories after a shared HEAD request fails", async () => {
-  const { config, fetch, responses } = fixture(3);
-  responses.set(
-    `https://api.github.com/repos/${config.dashboards[0]!.repository}/commits/HEAD`,
-    new Response("Rate limited", { status: 429 }),
-  );
-  const result = await updateDashboards(config);
-  expect(result.failed).toBe(true);
-  expect(result.changed).toBe(true);
-  expect(result.config.dashboards.slice(0, 2)).toEqual(config.dashboards.slice(0, 2));
-  expect(result.config.dashboards[2]!.releases).toHaveLength(
-    config.dashboards[2]!.releases.length + 1,
-  );
-  expect(
-    fetch.mock.calls.filter(([url]) => url instanceof URL && url.hostname === "api.github.com"),
-  ).toHaveLength(2);
-});
+it.each([{ shared: ["komari", "tokens"] }, { shared: ["tokens", "tungshing", "komari"] }])(
+  "continues with other repositories after $shared share a failed HEAD request",
+  async ({ shared }) => {
+    const { config, fetch, responses } = fixture([...shared, "pulse"]);
+    responses.set(
+      `https://api.github.com/repos/${config.dashboards[0]!.repository}/commits/HEAD`,
+      new Response("Rate limited", { status: 429 }),
+    );
+    const result = await updateDashboards(config);
+    expect(result.failed).toBe(true);
+    expect(result.changed).toBe(true);
+    expect(result.config.dashboards.slice(0, shared.length)).toEqual(
+      config.dashboards.slice(0, shared.length),
+    );
+    expect(result.config.dashboards.at(-1)!.releases).toHaveLength(
+      config.dashboards.at(-1)!.releases.length + 1,
+    );
+    expect(
+      fetch.mock.calls.filter(([url]) => url instanceof URL && url.hostname === "api.github.com"),
+    ).toHaveLength(2);
+  },
+);
 
 it.each([
-  ["unchanged version", bar("komari", sources.dashboards[0]!.releases.at(-1)!.version)],
+  [
+    "unchanged version",
+    bar("komari", sources.dashboards.find(({ id }) => id === "komari")!.releases.at(-1)!.version),
+  ],
   ["version rollback", bar("komari", "0.0.0")],
   ["non-strict version", bar("komari", "v2.0.0")],
   ["invalid metadata", bar("komari", "2.0.0", 'homepage="invalid"')],

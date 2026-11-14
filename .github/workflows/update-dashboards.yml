@@ -30,8 +30,9 @@ jobs:
       - uses: voidzero-dev/setup-vp@v1.22.0
         with:
           node-version-file: .node-version
+          cache: true
           run-install: |
-            args: ['--frozen-lockfile']
+            args: ['--frozen-lockfile', '--ignore-scripts']
       - name: Update dashboards
         id: update
         continue-on-error: true

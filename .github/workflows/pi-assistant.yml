@@ -31,10 +31,12 @@ env:
   GIT_COMMITTER_EMAIL: git@agili.app
 
 jobs:
-  assist:
-    concurrency:
-      group: pi-assistant
-      queue: max
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      run: ${{ steps.task.outputs.run }}
     if: >-
       github.event_name == 'issues' || github.event_name == 'workflow_dispatch'
       || github.event_name == 'push'
@@ -42,7 +44,39 @@ jobs:
       || (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@pi'))
       || (github.event_name == 'pull_request_target' && github.event.action != 'closed'
         && github.event.pull_request.head.repo.full_name == github.repository
+        && github.event.pull_request.base.ref == github.event.repository.default_branch
         && startsWith(github.event.pull_request.head.ref, 'automation/pi/'))
+    steps:
+      - name: Check for assistant work
+        id: task
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          case "$GITHUB_EVENT_NAME" in
+            push|workflow_run)
+              prs=$(gh api --method GET "repos/$GH_REPO/pulls" -f state=open -f base="$DEFAULT_BRANCH" -F per_page=100 --paginate --jq '.[] | select(.head.repo.full_name == env.GH_REPO and (.head.ref | startswith("automation/pi/"))) | .number')
+              ;;
+            pull_request_target) prs=$PR_NUMBER ;;
+            *) echo "run=true" >> "$GITHUB_OUTPUT"; exit 0 ;;
+          esac
+          for number in $prs; do
+            repair=$(gh api "repos/$GH_REPO/pulls/$number" --jq '.state == "open" and .head.repo.full_name == env.GH_REPO and .base.ref == env.DEFAULT_BRANCH and (.head.ref | startswith("automation/pi/")) and .mergeable != true')
+            if [[ "$repair" == true ]]; then
+              echo "run=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+          echo "run=false" >> "$GITHUB_OUTPUT"
+          echo "No open assistant PRs need a mergeability check or conflict repair." >> "$GITHUB_STEP_SUMMARY"
+  assist:
+    needs: check
+    if: needs.check.outputs.run == 'true'
+    concurrency:
+      group: pi-assistant
+      queue: max
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -85,8 +119,10 @@ jobs:
         if: steps.pi.outputs.success == 'false'
         run: exit 1
   approve-ci:
-    needs: assist
-    if: needs.assist.result == 'success'
+    needs: [check, assist]
+    if: >-
+      always() && !cancelled() && needs.check.result == 'success'
+      && (needs.assist.result == 'success' || needs.assist.result == 'skipped')
     runs-on: ubuntu-latest
     permissions:
       actions: write
